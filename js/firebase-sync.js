@@ -294,10 +294,22 @@ window.NutriSync = (function () {
             if (doc.exists) {
                 const cloudSettings = doc.data();
                 const localSettings = NutriStorage.getUserSettings();
-                // Merge cloud settings with local config (keeping the local firebaseConfig)
-                const merged = Object.assign({}, localSettings, cloudSettings, {
-                    firebaseConfig: localSettings.firebaseConfig // ensure this stays
-                });
+                
+                // Merge cloud settings with local config
+                const merged = Object.assign({}, localSettings, cloudSettings);
+                
+                // Intelligent merge for Gemini API Key:
+                // If local settings has a key but cloud doesn't, keep local key and push it to cloud.
+                if (localSettings.geminiApiKey && !cloudSettings.geminiApiKey) {
+                    merged.geminiApiKey = localSettings.geminiApiKey;
+                    setTimeout(() => {
+                        onLocalWrite(SETTINGS_KEY, merged);
+                    }, 1000);
+                }
+                
+                // Ensure local firebaseConfig is kept
+                merged.firebaseConfig = localSettings.firebaseConfig;
+                
                 // Write directly to localStorage to avoid trigger onLocalWrite loop
                 localStorage.setItem(SETTINGS_KEY, JSON.stringify(merged));
             }
