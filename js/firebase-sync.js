@@ -125,7 +125,7 @@ window.NutriSync = (function () {
         } catch (e) {
             console.error('[NutriSync] Failed to initialize Firebase:', e);
             if (window.NutriApp) {
-                window.NutriApp.showToast('Firebase initialization failed: check your config JSON.', 'error');
+                window.NutriApp.showToast('Firebase init failed: ' + e.message, 'error');
             }
         }
     }
