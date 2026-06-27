@@ -266,7 +266,7 @@ window.NutriApp = (function () {
         });
 
         // Navigation - bottom nav
-        document.querySelectorAll('.bottom-nav-item').forEach(item => {
+        document.querySelectorAll('.bottom-nav-item[data-page]').forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
                 navigate(item.dataset.page === 'food-log' ? 'food' : item.dataset.page);
@@ -274,13 +274,18 @@ window.NutriApp = (function () {
         });
 
         // Settings modal
-        const settingsBtn = document.getElementById('nav-settings-sidebar');
-        if (settingsBtn) {
-            settingsBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                openSettingsModal();
-            });
-        }
+        const settingsBtns = [
+            document.getElementById('nav-settings-sidebar'),
+            document.getElementById('bnav-settings')
+        ];
+        settingsBtns.forEach(btn => {
+            if (btn) {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openSettingsModal();
+                });
+            }
+        });
 
         document.getElementById('close-settings-modal')?.addEventListener('click', closeSettingsModal);
         document.getElementById('btn-save-settings')?.addEventListener('click', saveSettings);
