@@ -236,6 +236,9 @@ window.NutritionAI = (function () {
           ],
         },
       ],
+      generationConfig: {
+        responseMimeType: "application/json"
+      }
     };
 
     /* ── 5. Try models with fallbacks ────────────────── */
@@ -444,6 +447,9 @@ window.NutritionAI = (function () {
           ],
         },
       ],
+      generationConfig: {
+        responseMimeType: "application/json"
+      }
     };
 
     var response;
