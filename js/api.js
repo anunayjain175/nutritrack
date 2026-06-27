@@ -393,6 +393,16 @@ window.NutritionAI = (function () {
       throw new Error('Description cannot be empty.');
     }
 
+    /* ── 1. Check cache (allows instant & offline logging of cached foods) ── */
+    var cached = window.NutriStorage.getCachedNutrition(descNorm);
+    if (cached) {
+      return {
+        type: 'food',
+        data: cached,
+        model: 'local-cache'
+      };
+    }
+
     if (!isConfigured()) {
       throw new Error('Gemini API key is not configured. Please add your API key in Settings.');
     }
@@ -553,6 +563,8 @@ window.NutritionAI = (function () {
     
     if (parsed.type === 'food') {
       parsed.data = _sanitiseResponse(parsed.data);
+      // Cache the base food data for future fast lookups
+      window.NutriStorage.setCachedNutrition(descNorm, parsed.data);
     }
     
     parsed.model = successModel;
