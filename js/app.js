@@ -553,10 +553,12 @@ window.NutriApp = (function () {
         input.value = ''; // clear immediately
         input.blur();
 
+        const startTime = Date.now();
         const settings = NutriStorage.getUserSettings();
         const weight = parseFloat(settings.weight) || 70;
 
         NutritionAI.analyzeGlobal(text, weight).then(result => {
+            const duration = ((Date.now() - startTime) / 1000).toFixed(1);
             const today = getCurrentDate();
             if (result.type === 'food') {
                 // Determine meal type by time
@@ -572,14 +574,14 @@ window.NutriApp = (function () {
                     loggedAt: new Date().toISOString()
                 });
                 NutriStorage.addFoodEntry(today, entry);
-                showToast(`Logged ${entry.name} (${Math.round(entry.calories)} kcal) to ${meal}!`, 'success');
+                showToast(`Logged ${entry.name} (${Math.round(entry.calories)} kcal) to ${meal}! (took ${duration}s)`, 'success');
             } else if (result.type === 'exercise') {
                 const entry = Object.assign({}, result.data, {
                     id: NutriStorage.generateId(),
                     loggedAt: new Date().toISOString()
                 });
                 NutriStorage.addExerciseEntry(today, entry);
-                showToast(`Logged exercise: ${entry.name} (-${Math.round(entry.caloriesBurned)} kcal)!`, 'success');
+                showToast(`Logged exercise: ${entry.name} (-${Math.round(entry.caloriesBurned)} kcal)! (took ${duration}s)`, 'success');
             }
             // Re-render current page
             showPage(currentPage);
