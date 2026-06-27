@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NutriTrack — AI-powered calorie and nutrition tracker. Log food, exercise, and analyze your macro & micro nutrients with intelligent insights.">
+    <meta name="theme-color" content="#0a0e1a">
+    <title>NutriTrack — AI Calorie & Nutrition Tracker</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Manifest & Stylesheets -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+    <div id="app">
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- SIDEBAR NAVIGATION (Desktop)               -->
+        <!-- ═══════════════════════════════════════════ -->
+        <nav id="sidebar">
+            <div class="sidebar-logo">
+                <svg class="logo-icon" viewBox="0 0 32 32" width="36" height="36" fill="none">
+                    <circle cx="16" cy="16" r="15" stroke="url(#logoGrad)" stroke-width="2"/>
+                    <path d="M16 8c-1.5 3-6 5-6 10a6 6 0 0012 0c0-5-4.5-7-6-10z" fill="url(#logoGrad)"/>
+                    <defs>
+                        <linearGradient id="logoGrad" x1="0" y1="0" x2="32" y2="32">
+                            <stop offset="0%" stop-color="#10b981"/>
+                            <stop offset="100%" stop-color="#38bdf8"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <div class="logo-text">
+                    <span class="logo-name">NutriTrack</span>
+                    <span class="logo-tagline">AI Nutrition</span>
+                </div>
+            </div>
+
+            <div class="sidebar-nav">
+                <a href="#dashboard" class="sidebar-link active" data-page="dashboard" id="nav-dashboard">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#food" class="sidebar-link" data-page="food-log" id="nav-food-log">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+                    <span>Food Log</span>
+                </a>
+                <a href="#exercise" class="sidebar-link" data-page="exercise" id="nav-exercise">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5l11 11"/><path d="M21 3l-9.5 2.5L4 13l7 7 7.5-7.5L21 3z"/><path d="M14 14l-2-2"/><path d="M8 8l-2-2"/><path d="M3 21l2.5-2.5"/></svg>
+                    <span>Exercise</span>
+                </a>
+                <a href="#meals" class="sidebar-link" data-page="meals" id="nav-meals">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
+                    <span>Meal Planner</span>
+                </a>
+                <a href="#history" class="sidebar-link" data-page="history" id="nav-history">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span>History</span>
+                </a>
+                <a href="#nutrients" class="sidebar-link" data-page="nutrients" id="nav-nutrients">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+                    <span>Nutrients</span>
+                </a>
+                <a href="#" class="sidebar-link" id="pwa-install-btn" style="display:none; color: var(--primary);">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <span style="font-weight:600;">Install App</span>
+                </a>
+            </div>
+
+            <div class="sidebar-footer">
+                <a href="#settings" class="sidebar-link" id="nav-settings-sidebar" data-action="open-settings">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+                    <span>Settings</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- MAIN CONTENT AREA                          -->
+        <!-- ═══════════════════════════════════════════ -->
+        <main id="main-content">
+            <!-- Dashboard Page -->
+            <section id="page-dashboard" class="page-section active">
+                <div class="page-inner">
+                    <!-- Rendered by dashboard.js -->
+                </div>
+            </section>
+
+            <!-- Food Log Page -->
+            <section id="page-food-log" class="page-section">
+                <div class="page-inner">
+                    <!-- Rendered by food-log.js -->
+                </div>
+            </section>
+
+            <!-- Exercise Page -->
+            <section id="page-exercise" class="page-section">
+                <div class="page-inner">
+                    <!-- Rendered by exercise-log.js -->
+                </div>
+            </section>
+
+            <!-- Meal Planner Page -->
+            <section id="page-meals" class="page-section">
+                <div class="page-inner">
+                    <!-- Rendered by meal-planner.js -->
+                </div>
+            </section>
+
+            <!-- History Page -->
+            <section id="page-history" class="page-section">
+                <div class="page-inner">
+                    <!-- Rendered by history.js -->
+                </div>
+            </section>
+
+            <!-- Nutrients Page -->
+            <section id="page-nutrients" class="page-section">
+                <div class="page-inner">
+                    <!-- Rendered by nutrients.js -->
+                </div>
+            </section>
+        </main>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- BOTTOM NAVIGATION (Mobile)                 -->
+        <!-- ═══════════════════════════════════════════ -->
+        <nav id="bottom-nav">
+            <a href="#dashboard" class="bottom-nav-item active" data-page="dashboard" id="bnav-dashboard">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                <span>Home</span>
+            </a>
+            <a href="#food" class="bottom-nav-item" data-page="food-log" id="bnav-food">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+                <span>Food</span>
+            </a>
+            <a href="#exercise" class="bottom-nav-item" data-page="exercise" id="bnav-exercise">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5l11 11"/><path d="M21 3l-9.5 2.5L4 13l7 7 7.5-7.5L21 3z"/><path d="M14 14l-2-2"/><path d="M8 8l-2-2"/><path d="M3 21l2.5-2.5"/></svg>
+                <span>Exercise</span>
+            </a>
+            <a href="#meals" class="bottom-nav-item" data-page="meals" id="bnav-meals">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
+                <span>Meals</span>
+            </a>
+            <a href="#history" class="bottom-nav-item" data-page="history" id="bnav-history">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>History</span>
+            </a>
+        </nav>
+
+        <!-- Global Sticky Bottom Input Bar (HealthifyMe Style) -->
+        <div class="global-bottom-bar">
+            <div class="global-bottom-bar__inner">
+                <div class="pill-input-container">
+                    <input type="text" id="global-chat-input" placeholder="What did you eat or exercise?">
+                    <div class="pill-input-icons">
+                        <button class="pill-icon-btn" title="Bookmark">🔖</button>
+                        <button class="pill-icon-btn" title="Add Photo">🖼️</button>
+                        <button class="pill-icon-btn" title="Camera">📷</button>
+                        <button class="pill-send-btn" id="global-chat-submit-btn" aria-label="Send">➔</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTTOM SHEET MENU FOR FOOD ITEMS -->
+    <div id="bottom-sheet-menu" class="modal-overlay" style="display:none;">
+        <div class="bottom-sheet">
+            <div class="bottom-sheet__item" data-action="sheet-edit">
+                <span class="bottom-sheet__icon">📝</span>
+                <span class="bottom-sheet__label">Edit Entry</span>
+            </div>
+            <div class="bottom-sheet__item" data-action="sheet-adjust">
+                <span class="bottom-sheet__icon">⚙️</span>
+                <span class="bottom-sheet__label">Adjust Calories & Macros</span>
+            </div>
+            <div class="bottom-sheet__item" data-action="sheet-datetime">
+                <span class="bottom-sheet__icon">🕒</span>
+                <span class="bottom-sheet__label">Change Date & Time</span>
+            </div>
+            <div class="bottom-sheet__item" data-action="sheet-save">
+                <span class="bottom-sheet__icon">🔖</span>
+                <span class="bottom-sheet__label">Add to Saved Entries</span>
+            </div>
+            <div class="bottom-sheet__item" data-action="sheet-delete" style="color: var(--danger);">
+                <span class="bottom-sheet__icon">🗑️</span>
+                <span class="bottom-sheet__label">Delete</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT FOOD ENTRY MODAL -->
+    <div id="modal-edit-food" class="modal-overlay" style="display:none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Edit Food Entry</h2>
+                <button class="modal-close" id="close-edit-food-modal" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-food-form">
+                    <input type="hidden" id="edit-food-id">
+                    <input type="hidden" id="edit-food-date">
+                    <div class="input-group" style="margin-bottom: 12px;">
+                        <label class="input-label" for="edit-food-name">Food Name</label>
+                        <input type="text" class="input-field" id="edit-food-name" required>
+                    </div>
+                    <div class="input-row" style="display: flex; gap: 12px; margin-bottom: 12px;">
+                        <div class="input-group" style="flex: 1;">
+                            <label class="input-label" for="edit-food-calories">Calories (kcal)</label>
+                            <input type="number" class="input-field" id="edit-food-calories" required min="0">
+                        </div>
+                        <div class="input-group" style="flex: 1;">
+                            <label class="input-label" for="edit-food-carbs">Carbs (g)</label>
+                            <input type="number" class="input-field" id="edit-food-carbs" required min="0" step="0.1">
+                        </div>
+                    </div>
+                    <div class="input-row" style="display: flex; gap: 12px; margin-bottom: 12px;">
+                        <div class="input-group" style="flex: 1;">
+                            <label class="input-label" for="edit-food-protein">Protein (g)</label>
+                            <input type="number" class="input-field" id="edit-food-protein" required min="0" step="0.1">
+                        </div>
+                        <div class="input-group" style="flex: 1;">
+                            <label class="input-label" for="edit-food-fat">Fat (g)</label>
+                            <input type="number" class="input-field" id="edit-food-fat" required min="0" step="0.1">
+                        </div>
+                    </div>
+                    <div class="input-row" style="margin-bottom: 16px;">
+                        <div class="input-group">
+                            <label class="input-label" for="edit-food-meal">Meal Type</label>
+                            <select class="input-field" id="edit-food-meal">
+                                <option value="breakfast">Breakfast</option>
+                                <option value="lunch">Lunch</option>
+                                <option value="dinner">Dinner</option>
+                                <option value="snacks">Snacks</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SETTINGS MODAL                             -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div id="modal-settings" class="modal-overlay" style="display:none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <button class="modal-close" id="close-settings-modal" aria-label="Close settings">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label class="input-label" for="setting-name">Your Name</label>
+                    <input type="text" class="input-field" id="setting-name" placeholder="Enter your name">
+                </div>
+                <div class="input-group">
+                    <label class="input-label" for="setting-calorie-goal">Daily Calorie Goal (kcal)</label>
+                    <input type="number" class="input-field" id="setting-calorie-goal" placeholder="2000" min="500" max="10000">
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label class="input-label" for="setting-weight">Weight (kg)</label>
+                        <input type="number" class="input-field" id="setting-weight" placeholder="70" min="20" max="300">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label" for="setting-height">Height (cm)</label>
+                        <input type="number" class="input-field" id="setting-height" placeholder="170" min="100" max="250">
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label class="input-label" for="setting-age">Age</label>
+                        <input type="number" class="input-field" id="setting-age" placeholder="25" min="10" max="120">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label" for="setting-activity">Activity Level</label>
+                        <select class="input-field" id="setting-activity">
+                            <option value="sedentary">Sedentary</option>
+                            <option value="light">Lightly Active</option>
+                            <option value="moderate" selected>Moderately Active</option>
+                            <option value="active">Very Active</option>
+                            <option value="extra">Extra Active</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="input-group">
+                    <label class="input-label" for="setting-api-key">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:6px;"><path d="M12 2a4 4 0 014 4c0 1.1-.4 2.1-1.1 2.9L21 15l-3 3-2-2-2 2-3-3 6.1-6.1A4 4 0 0112 2z"/><circle cx="12" cy="6" r="1"/></svg>
+                        Gemini API Key
+                    </label>
+                    <input type="password" class="input-field" id="setting-api-key" placeholder="Paste your API key from Google AI Studio">
+                    <p class="text-sm text-muted" style="margin-top:4px;">Free from <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" style="color:#38bdf8;">Google AI Studio</a>. Stored locally only.</p>
+                </div>
+                <div class="divider"></div>
+                <div class="input-group" style="margin-bottom: 16px;">
+                    <label class="input-label">
+                        ☁️ Firebase Cloud Sync
+                    </label>
+                    
+                    <!-- Firebase configuration text area (when disconnected) -->
+                    <div id="firebase-setup-section">
+                        <p class="text-sm text-muted" style="margin-bottom: 8px;">Backup your logs to the cloud and sync across devices. Paste your Firebase web app config JSON:</p>
+                        <textarea class="input-field" id="setting-firebase-config" placeholder='{
+  "apiKey": "AIzaSy...",
+  "authDomain": "your-app.firebaseapp.com",
+  "projectId": "your-app",
+  "appId": "1:..."
+}' rows="4" style="font-family: monospace; font-size: 11px; resize: vertical; margin-bottom: 8px;"></textarea>
+                        <button type="button" class="btn btn-secondary btn-block" id="btn-connect-firebase">Connect Firebase</button>
+                    </div>
+
+                    <!-- Authentication & user status section (when config is connected) -->
+                    <div id="firebase-auth-section" style="display: none;">
+                        <div id="firebase-user-info" class="text-sm" style="margin-bottom: 8px; font-weight: 500; color: var(--text-primary);">
+                            Firebase Config Connected (Not Signed In)
+                        </div>
+                        <div class="auth-inputs-group" id="firebase-auth-inputs" style="margin-bottom: 8px;">
+                            <button type="button" id="btn-toggle-auth-method" style="background:none; border:none; color:var(--primary); font-size:11px; text-decoration:underline; cursor:pointer; padding:0; margin-bottom:8px; display:block; text-align:left;">Switch to Phone Sign-In</button>
+                            
+                            <!-- Email Sign In/Up Inputs -->
+                            <div id="email-auth-inputs" style="display: block;">
+                                <input type="email" class="input-field" id="auth-email" placeholder="Email Address" style="margin-bottom: 6px;">
+                                <input type="password" class="input-field" id="auth-password" placeholder="Password" style="margin-bottom: 8px;">
+                                <div class="btn-row" style="display: flex; gap: 8px;">
+                                    <button type="button" class="btn btn-primary" id="btn-auth-login" style="flex: 1;">Log In</button>
+                                    <button type="button" class="btn btn-secondary" id="btn-auth-register" style="flex: 1;">Sign Up</button>
+                                </div>
+                            </div>
+
+                            <!-- Phone Sign In/Up Inputs -->
+                            <div id="phone-auth-inputs" style="display: none;">
+                                <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                                    <input type="tel" class="input-field" id="auth-phone" placeholder="Phone (e.g. +919999999999)" style="flex: 1;">
+                                    <button type="button" class="btn btn-primary" id="btn-send-otp" style="padding: 0 16px; font-size: 12px; font-weight: 500; min-width: 90px;">Send OTP</button>
+                                </div>
+                                <div id="otp-verification-inputs" style="display: none;">
+                                    <input type="text" class="input-field" id="auth-otp" placeholder="6-digit OTP code" style="margin-bottom: 8px;">
+                                    <button type="button" class="btn btn-primary btn-block" id="btn-verify-otp">Verify & Sign In</button>
+                                </div>
+                                <div id="recaptcha-container" style="margin-top: 4px;"></div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-secondary btn-block" id="btn-auth-logout" style="display: none; margin-bottom: 6px;">Log Out</button>
+                        <button type="button" class="btn btn-block" id="btn-disconnect-firebase" style="color: var(--danger); border: 1px solid var(--glass-border); background: var(--primary-subtle); padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.2s;">Disconnect Firebase</button>
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="input-group">
+                    <label class="input-label">Data Management</label>
+                    <div class="btn-row">
+                        <button class="btn btn-secondary" id="btn-export-data">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Export Data
+                        </button>
+                        <button class="btn btn-secondary" id="btn-import-data">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            Import Data
+                        </button>
+                    </div>
+                </div>
+                <input type="file" id="import-file-input" accept=".json" style="display:none;">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="btn-save-settings">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- TOAST CONTAINER                            -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SCRIPTS                                    -->
+    <!-- ═══════════════════════════════════════════ -->
+    <script src="js/storage.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/food-log.js"></script>
+    <script src="js/exercise-log.js"></script>
+    <script src="js/meal-planner.js"></script>
+    <script src="js/history.js"></script>
+    <script src="js/nutrients.js"></script>
+    <!-- Firebase SDK (Compat version for Vanilla JS) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-sync.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
