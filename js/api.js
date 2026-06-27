@@ -362,7 +362,9 @@ window.NutritionAI = (function () {
     // Cache the base (1-serving) data
     window.NutriStorage.setCachedNutrition(descNorm, nutritionData);
 
-    return _multiplyByServings(nutritionData, servings);
+    var result = _multiplyByServings(nutritionData, servings);
+    result.model = successModel;
+    return result;
   }
 
   /**
@@ -526,6 +528,7 @@ window.NutritionAI = (function () {
       parsed.data = _sanitiseResponse(parsed.data);
     }
     
+    parsed.model = successModel;
     return parsed;
   }
 

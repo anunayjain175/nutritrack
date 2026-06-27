@@ -574,14 +574,14 @@ window.NutriApp = (function () {
                     loggedAt: new Date().toISOString()
                 });
                 NutriStorage.addFoodEntry(today, entry);
-                showToast(`Logged ${entry.name} (${Math.round(entry.calories)} kcal) to ${meal}! (took ${duration}s)`, 'success');
+                showToast(`Logged ${entry.name} (${Math.round(entry.calories)} kcal) to ${meal}! (took ${duration}s via ${result.model})`, 'success');
             } else if (result.type === 'exercise') {
                 const entry = Object.assign({}, result.data, {
                     id: NutriStorage.generateId(),
                     loggedAt: new Date().toISOString()
                 });
                 NutriStorage.addExerciseEntry(today, entry);
-                showToast(`Logged exercise: ${entry.name} (-${Math.round(entry.caloriesBurned)} kcal)! (took ${duration}s)`, 'success');
+                showToast(`Logged exercise: ${entry.name} (-${Math.round(entry.caloriesBurned)} kcal)! (took ${duration}s via ${result.model})`, 'success');
             }
             // Re-render current page
             showPage(currentPage);
