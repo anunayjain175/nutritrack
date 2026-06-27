@@ -451,7 +451,7 @@ textarea.input-field {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
-  color: var(--text-primary);
+  color: var(--text-inverse);
   font-size: 0.875rem;
   font-weight: 500;
   pointer-events: auto;
