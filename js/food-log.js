@@ -150,8 +150,16 @@ window.FoodLogPage = (function () {
         var subItems = entry.subItems || [];
         
         if (subItems.length === 0) {
+            var displayName = entry.name;
+            if (entry.servingSize && entry.servingUnit) {
+                var size = entry.servingSize;
+                var unit = entry.servingUnit;
+                if (displayName.indexOf('(') === -1) {
+                    displayName += ' (' + size + ' ' + unit + ')';
+                }
+            }
             subItems = [{
-                name: entry.name,
+                name: displayName,
                 calories: entry.calories,
                 carbs: entry.carbs,
                 protein: entry.protein,
