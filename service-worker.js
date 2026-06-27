@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nutritrack-v1';
+const CACHE_NAME = 'nutritrack-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -15,6 +15,7 @@ const ASSETS_TO_CACHE = [
   './js/meal-planner.js',
   './js/history.js',
   './js/nutrients.js',
+  './js/firebase-config.js',
   './js/app.js',
   './js/firebase-sync.js',
   './images/icon-192.png',
