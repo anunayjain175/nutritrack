@@ -27,8 +27,10 @@ window.NutritionAI = (function () {
   ];
 
   var _cachedModelName = null;
+  var _cachedApiVersion = null;
   try {
     _cachedModelName = localStorage.getItem('nutritrack_last_working_model');
+    _cachedApiVersion = localStorage.getItem('nutritrack_last_working_version');
   } catch (_) {}
 
   var MIN_REQUEST_GAP_MS = 4000; // 4 seconds between calls
@@ -251,11 +253,17 @@ window.NutritionAI = (function () {
 
     for (var i = 0; i < modelsToTry.length; i++) {
       var modelName = modelsToTry[i];
-      // Try v1beta first, if we get 404 try v1
-      var endpoints = [
-        'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
-        'https://generativelanguage.googleapis.com/v1/models/' + modelName + ':generateContent'
-      ];
+      // Try cached version first, fallback to other
+      var versions = ['v1beta', 'v1'];
+      if (_cachedApiVersion) {
+        var idx = versions.indexOf(_cachedApiVersion);
+        if (idx !== -1) versions.splice(idx, 1);
+        versions.unshift(_cachedApiVersion);
+      }
+
+      var endpoints = versions.map(function(v) {
+        return 'https://generativelanguage.googleapis.com/' + v + '/models/' + modelName + ':generateContent';
+      });
 
       for (var j = 0; j < endpoints.length; j++) {
         var url = endpoints[j] + '?key=' + encodeURIComponent(apiKey);
@@ -270,8 +278,11 @@ window.NutritionAI = (function () {
           if (response.ok) {
             successModel = modelName;
             _cachedModelName = modelName;
+            var versionMatched = url.indexOf('/v1beta/') !== -1 ? 'v1beta' : 'v1';
+            _cachedApiVersion = versionMatched;
             try {
               localStorage.setItem('nutritrack_last_working_model', modelName);
+              localStorage.setItem('nutritrack_last_working_version', versionMatched);
             } catch (_) {}
             break;
           }
@@ -449,10 +460,17 @@ window.NutritionAI = (function () {
 
     for (var i = 0; i < modelsToTry.length; i++) {
       var modelName = modelsToTry[i];
-      var endpoints = [
-        'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
-        'https://generativelanguage.googleapis.com/v1/models/' + modelName + ':generateContent'
-      ];
+      // Try cached version first, fallback to other
+      var versions = ['v1beta', 'v1'];
+      if (_cachedApiVersion) {
+        var idx = versions.indexOf(_cachedApiVersion);
+        if (idx !== -1) versions.splice(idx, 1);
+        versions.unshift(_cachedApiVersion);
+      }
+
+      var endpoints = versions.map(function(v) {
+        return 'https://generativelanguage.googleapis.com/' + v + '/models/' + modelName + ':generateContent';
+      });
 
       for (var j = 0; j < endpoints.length; j++) {
         var url = endpoints[j] + '?key=' + encodeURIComponent(apiKey);
@@ -467,8 +485,11 @@ window.NutritionAI = (function () {
           if (response.ok) {
             successModel = modelName;
             _cachedModelName = modelName;
+            var versionMatched = url.indexOf('/v1beta/') !== -1 ? 'v1beta' : 'v1';
+            _cachedApiVersion = versionMatched;
             try {
               localStorage.setItem('nutritrack_last_working_model', modelName);
+              localStorage.setItem('nutritrack_last_working_version', versionMatched);
             } catch (_) {}
             break;
           }
