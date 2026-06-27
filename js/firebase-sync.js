@@ -49,7 +49,6 @@ window.NutriSync = (function () {
         }
 
         try {
-            let configObj = settings.firebaseConfig;
             if (typeof configObj === 'string') {
                 let cleanStr = configObj.trim();
                 cleanStr = cleanStr.replace(/^(const|let|var)\s+\w+\s*=\s*/i, '');
