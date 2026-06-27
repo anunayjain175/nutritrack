@@ -314,6 +314,20 @@ window.NutriApp = (function () {
             }
         });
 
+        // Photo and Camera button click handlers
+        document.getElementById('global-photo-btn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('global-photo-input')?.click();
+        });
+        document.getElementById('global-camera-btn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('global-camera-input')?.click();
+        });
+
+        // Hidden input change handlers
+        document.getElementById('global-photo-input')?.addEventListener('change', handleImageInput);
+        document.getElementById('global-camera-input')?.addEventListener('change', handleImageInput);
+
         // Event delegation for grouped food card action triggers (pencil and 3 dots ⋮)
         document.body.addEventListener('click', (e) => {
             const pencilBtn = e.target.closest('[data-action="edit-food-pencil"]');
@@ -588,6 +602,82 @@ window.NutriApp = (function () {
         }).catch(err => {
             showToast('Analysis failed: ' + (err.message || err), 'error');
             input.value = text; // restore on failure
+        });
+    }
+
+    function _fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
+
+    function handleImageInput(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const targetInput = e.target;
+        
+        if (!NutritionAI.isConfigured()) {
+            showToast('Please add your Gemini API key in Settings first.', 'warning');
+            openSettingsModal();
+            targetInput.value = '';
+            return;
+        }
+
+        showToast('Uploading and reading image...', 'info');
+
+        _fileToBase64(file).then(dataUrl => {
+            const commaIdx = dataUrl.indexOf(',');
+            if (commaIdx === -1) {
+                showToast('Failed to parse image data.', 'error');
+                targetInput.value = '';
+                return;
+            }
+            const mime = dataUrl.substring(5, dataUrl.indexOf(';'));
+            const base64 = dataUrl.substring(commaIdx + 1);
+
+            showToast('Analyzing food image with AI...', 'info');
+            const startTime = Date.now();
+            const settings = NutriStorage.getUserSettings();
+            const weight = parseFloat(settings.weight) || 70;
+
+            NutritionAI.analyzeImage(base64, mime, weight).then(result => {
+                const duration = ((Date.now() - startTime) / 1000).toFixed(1);
+                const today = getCurrentDate();
+                if (result.type === 'food') {
+                    const hour = new Date().getHours();
+                    let meal = 'snacks';
+                    if (hour >= 6 && hour < 11) meal = 'breakfast';
+                    else if (hour >= 11 && hour < 16) meal = 'lunch';
+                    else if (hour >= 18 && hour < 22) meal = 'dinner';
+
+                    const entry = Object.assign({}, result.data, {
+                        id: NutriStorage.generateId(),
+                        meal: meal,
+                        loggedAt: new Date().toISOString()
+                    });
+                    NutriStorage.addFoodEntry(today, entry);
+                    showToast(`Logged image: ${entry.name} (${Math.round(entry.calories)} kcal) to ${meal}! (took ${duration}s via ${result.model})`, 'success');
+                } else if (result.type === 'exercise') {
+                    const entry = Object.assign({}, result.data, {
+                        id: NutriStorage.generateId(),
+                        loggedAt: new Date().toISOString()
+                    });
+                    NutriStorage.addExerciseEntry(today, entry);
+                    showToast(`Logged exercise: ${entry.name} (-${Math.round(entry.caloriesBurned)} kcal)! (took ${duration}s via ${result.model})`, 'success');
+                }
+                targetInput.value = '';
+                showPage(currentPage);
+            }).catch(err => {
+                showToast('Image analysis failed: ' + (err.message || err), 'error');
+                targetInput.value = '';
+            });
+        }).catch(err => {
+            showToast('Failed to read file: ' + err.message, 'error');
+            targetInput.value = '';
         });
     }
 

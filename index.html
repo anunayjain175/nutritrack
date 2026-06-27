@@ -164,10 +164,12 @@
             <div class="global-bottom-bar__inner">
                 <div class="pill-input-container">
                     <input type="text" id="global-chat-input" placeholder="What did you eat or exercise?">
+                    <input type="file" id="global-photo-input" accept="image/*" style="display:none;">
+                    <input type="file" id="global-camera-input" accept="image/*" capture="environment" style="display:none;">
                     <div class="pill-input-icons">
                         <button class="pill-icon-btn" title="Bookmark">🔖</button>
-                        <button class="pill-icon-btn" title="Add Photo">🖼️</button>
-                        <button class="pill-icon-btn" title="Camera">📷</button>
+                        <button class="pill-icon-btn" id="global-photo-btn" title="Add Photo">🖼️</button>
+                        <button class="pill-icon-btn" id="global-camera-btn" title="Camera">📷</button>
                         <button class="pill-send-btn" id="global-chat-submit-btn" aria-label="Send">➔</button>
                     </div>
                 </div>

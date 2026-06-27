@@ -571,11 +571,207 @@ window.NutritionAI = (function () {
     return parsed;
   }
 
+  /**
+   * Analyse an image that could contain food or exercise,
+   * classify it, and return structured data.
+   *
+   * @param {string} base64Data  Raw base64 data string (no data:image/... prefix)
+   * @param {string} mimeType    MIME type of the image, e.g. "image/jpeg"
+   * @param {number} [weight=70] User's weight in kg for exercise MET calculation
+   * @returns {Promise<Object>}  Structured analysis result
+   */
+  async function analyzeImage(base64Data, mimeType, weight) {
+    if (weight === undefined || weight === null) weight = 70;
+    if (!base64Data) {
+      throw new Error('Image data cannot be empty.');
+    }
+
+    if (!isConfigured()) {
+      throw new Error('Gemini API key is not configured. Please add your API key in Settings.');
+    }
+
+    await _waitForRateLimit();
+
+    var apiKey = getApiKey();
+    var imagePrompt = [
+      'You are a calorie tracking assistant. Look at this image and identify either the food item/meal they ate, or the exercise/activity/workout/equipment they performed/used. ',
+      'Classify the image content as either "food" or "exercise". ',
+      'Respond with ONLY valid JSON (no markdown, no explanation) matching this exact schema:\n\n',
+      'If it is food:\n',
+      '{\n',
+      '  "type": "food",\n',
+      '  "data": {\n',
+      '    "name": "cleaned food name",\n',
+      '    "calories": <number>,\n',
+      '    "protein": <grams as number>,\n',
+      '    "carbs": <grams as number>,\n',
+      '    "fat": <grams as number>,\n',
+      '    "fiber": <grams as number>,\n',
+      '    "sugar": <grams as number>,\n',
+      '    "vitamins": { "A": <% DV>, "B6": <% DV>, "B12": <% DV>, "C": <% DV>, "D": <% DV>, "E": <% DV>, "K": <% DV> },\n',
+      '    "minerals": { "iron": <% DV>, "calcium": <% DV>, "potassium": <% DV>, "magnesium": <% DV>, "zinc": <% DV>, "sodium": <% DV> },\n',
+      '    "servingSize": <number>,\n',
+      '    "servingUnit": "g",\n',
+      '    "subItems": [\n',
+      '      {\n',
+      '        "name": "cleaned single food item name with serving size (e.g. Khaman (5 pieces))",\n',
+      '        "calories": <number>,\n',
+      '        "protein": <grams>,\n',
+      '        "carbs": <grams>,\n',
+      '        "fat": <grams>\n',
+      '      }\n',
+      '    ]\n',
+      '  }\n',
+      '}\n\n',
+      'If it is exercise (calculate calories burned using standard MET value for user weight ' + weight + ' kg and duration if not explicitly mentioned by user, assume 30 minutes if duration is not clear):\n',
+      '{\n',
+      '  "type": "exercise",\n',
+      '  "data": {\n',
+      '    "name": "cleaned exercise name",\n',
+      '    "duration": <minutes as number>,\n',
+      '    "caloriesBurned": <calories burned as number>,\n',
+      '    "category": "<cardio, strength, flexibility, or sports>"\n',
+      '  }\n',
+      '}\n\n',
+      'Rules:\n',
+      '- Return ONLY valid JSON.\n',
+      '- All nutrient values must be numbers, not strings.\n',
+      '- Be realistic and accurate based on what you see in the image.'
+    ].join('');
+
+    var body = {
+      contents: [
+        {
+          parts: [
+            {
+              text: imagePrompt,
+            },
+            {
+              inlineData: {
+                mimeType: mimeType,
+                data: base64Data
+              }
+            }
+          ],
+        },
+      ],
+      generationConfig: {
+        responseMimeType: "application/json"
+      }
+    };
+
+    var response;
+    var successModel = null;
+    var lastError = null;
+    var lastRateLimitError = null;
+
+    var modelsToTry = MODELS_TO_TRY.slice();
+    if (_cachedModelName) {
+      var idx = modelsToTry.indexOf(_cachedModelName);
+      if (idx !== -1) modelsToTry.splice(idx, 1);
+      modelsToTry.unshift(_cachedModelName);
+    }
+
+    for (var i = 0; i < modelsToTry.length; i++) {
+      var modelName = modelsToTry[i];
+      var versions = ['v1beta', 'v1'];
+      if (_cachedApiVersion) {
+        var idx = versions.indexOf(_cachedApiVersion);
+        if (idx !== -1) versions.splice(idx, 1);
+        versions.unshift(_cachedApiVersion);
+      }
+
+      var endpoints = versions.map(function(v) {
+        return 'https://generativelanguage.googleapis.com/' + v + '/models/' + modelName + ':generateContent';
+      });
+
+      for (var j = 0; j < endpoints.length; j++) {
+        var url = endpoints[j] + '?key=' + encodeURIComponent(apiKey);
+        try {
+          _lastRequestTime = Date.now();
+          response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+          });
+
+          if (response.ok) {
+            successModel = modelName;
+            _cachedModelName = modelName;
+            var versionMatched = url.indexOf('/v1beta/') !== -1 ? 'v1beta' : 'v1';
+            _cachedApiVersion = versionMatched;
+            try {
+              localStorage.setItem('nutritrack_last_working_model', modelName);
+              localStorage.setItem('nutritrack_last_working_version', versionMatched);
+            } catch (_) {}
+            break;
+          }
+
+          if (!response.ok) {
+            var status = response.status;
+            var errMsg = 'API request failed with status ' + status + '.';
+            try {
+              var errJson = await response.json();
+              if (errJson && errJson.error && errJson.error.message) {
+                errMsg = errJson.error.message;
+              }
+            } catch (_) {}
+
+            if (status === 404) {
+              lastError = new Error('Model ' + modelName + ' not found: ' + errMsg);
+              continue;
+            } else if (status === 429) {
+              lastRateLimitError = new Error('Rate limit: ' + errMsg);
+              continue;
+            } else if (status === 401 || status === 403) {
+              throw new Error('Invalid or unauthorised API key. Please check your Gemini API key in Settings.');
+            } else if (status === 400) {
+              throw new Error('Bad request: ' + errMsg);
+            } else if (status >= 500) {
+              lastError = new Error('Gemini API server error (' + status + '): ' + errMsg);
+              continue;
+            }
+            throw new Error(errMsg);
+          }
+        } catch (err) {
+          if (err.message.indexOf('Invalid or unauthorised') !== -1 || 
+              err.message.indexOf('Bad request') !== -1) {
+            throw err;
+          }
+          if (err.message.indexOf('Rate limit') !== -1) {
+            lastRateLimitError = err;
+          } else {
+            lastError = err;
+          }
+        }
+      }
+
+      if (successModel) break;
+    }
+
+    if (!successModel || !response) {
+      throw lastRateLimitError || lastError || new Error('Failed to connect to any Gemini models.');
+    }
+
+    var json = await response.json();
+    var textResponse = json.candidates[0].content.parts[0].text;
+    var clean = textResponse.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/i, '').trim();
+    var parsed = JSON.parse(clean);
+    
+    if (parsed.type === 'food') {
+      parsed.data = _sanitiseResponse(parsed.data);
+    }
+    
+    parsed.model = successModel;
+    return parsed;
+  }
+
   /* ─────────────────── Expose ───────────────────────── */
 
   return {
     analyze: analyze,
     analyzeGlobal: analyzeGlobal,
+    analyzeImage: analyzeImage,
     isConfigured: isConfigured,
     getApiKey: getApiKey,
   };
