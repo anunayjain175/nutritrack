@@ -8,10 +8,10 @@
  * to paste their own Firebase configuration JSON in the Settings UI.
  */
 window.firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyBNbIsokcQhJAvLoauRC8BCZPGfrBAQqVU",
+    authDomain: "nutritrack-77568.firebaseapp.com",
+    projectId: "nutritrack-77568",
+    storageBucket: "nutritrack-77568.firebasestorage.app",
+    messagingSenderId: "71904050793",
+    appId: "1:71904050793:web:5ce67da2b3f579db19ecf8"
 };
