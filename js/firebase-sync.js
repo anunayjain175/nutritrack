@@ -23,13 +23,29 @@ window.NutriSync = (function () {
 
     /* ─────────────────── Initialization ─────────────────── */
 
+    function isEmbeddedConfigValid() {
+        return window.firebaseConfig && 
+               window.firebaseConfig.apiKey && 
+               !window.firebaseConfig.apiKey.startsWith('YOUR_');
+    }
+
     function init() {
         if (isInitialized) return;
 
-        const settings = NutriStorage.getUserSettings();
-        if (!settings || !settings.firebaseConfig) {
-            console.log('[NutriSync] Firebase config not found. Running in local-only mode.');
-            return;
+        let configObj = null;
+
+        // Check if there is a valid embedded config in firebase-config.js
+        if (isEmbeddedConfigValid()) {
+            configObj = window.firebaseConfig;
+            console.log('[NutriSync] Using embedded Firebase configuration.');
+        } else {
+            // Fall back to settings-based config
+            const settings = NutriStorage.getUserSettings();
+            if (!settings || !settings.firebaseConfig) {
+                console.log('[NutriSync] Firebase config not found. Running in local-only mode.');
+                return;
+            }
+            configObj = settings.firebaseConfig;
         }
 
         try {
@@ -417,6 +433,7 @@ window.NutriSync = (function () {
         // Phone Auth methods
         initPhoneAuth: initPhoneAuth,
         sendOTP: sendOTP,
-        verifyOTP: verifyOTP
+        verifyOTP: verifyOTP,
+        isEmbeddedConfigValid: isEmbeddedConfigValid
     };
 })();

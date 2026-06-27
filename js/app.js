@@ -729,8 +729,17 @@ window.NutriApp = (function () {
         const authInputs = document.getElementById('firebase-auth-inputs');
         const logoutBtn = document.getElementById('btn-auth-logout');
         const userInfo = document.getElementById('firebase-user-info');
+        const disconnectBtn = document.getElementById('btn-disconnect-firebase');
 
         if (!setupSec || !authSec) return;
+
+        if (disconnectBtn) {
+            if (window.NutriSync && window.NutriSync.isEmbeddedConfigValid()) {
+                disconnectBtn.style.display = 'none';
+            } else {
+                disconnectBtn.style.display = 'block';
+            }
+        }
 
         if (!window.NutriSync || !window.NutriSync.isConfigured()) {
             setupSec.style.display = 'block';
