@@ -14,6 +14,16 @@ window.NutritionAI = (function () {
   var ENDPOINT =
     'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
 
+  var MODELS_TO_TRY = [
+    'gemini-2.5-flash',
+    'gemini-2.5-flash-lite',
+    'gemini-2.0-flash',
+    'gemini-2.0-flash-lite',
+    'gemini-1.5-flash',
+    'gemini-1.5-flash-lite',
+    'gemini-flash-latest'
+  ];
+
   var MIN_REQUEST_GAP_MS = 4000; // 4 seconds between calls
   var _lastRequestTime = 0;
 
@@ -220,24 +230,13 @@ window.NutritionAI = (function () {
     };
 
     /* ── 5. Try models with fallbacks ────────────────── */
-    var modelsToTry = [
-      'gemini-3.5-flash',
-      'gemini-3.1-flash-lite',
-      'gemini-2.5-flash',
-      'gemini-2.5-flash-lite',
-      'gemini-flash-latest',
-      'gemini-flash-lite-latest',
-      'gemini-2.0-flash',
-      'gemini-2.0-flash-lite'
-    ];
-    
     var response;
     var successModel = null;
     var lastError = null;
     var lastRateLimitError = null;
 
-    for (var i = 0; i < modelsToTry.length; i++) {
-      var modelName = modelsToTry[i];
+    for (var i = 0; i < MODELS_TO_TRY.length; i++) {
+      var modelName = MODELS_TO_TRY[i];
       // Try v1beta first, if we get 404 try v1
       var endpoints = [
         'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
@@ -421,8 +420,8 @@ window.NutritionAI = (function () {
     var lastError = null;
     var lastRateLimitError = null;
 
-    for (var i = 0; i < modelsToTry.length; i++) {
-      var modelName = modelsToTry[i];
+    for (var i = 0; i < MODELS_TO_TRY.length; i++) {
+      var modelName = MODELS_TO_TRY[i];
       var endpoints = [
         'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
         'https://generativelanguage.googleapis.com/v1/models/' + modelName + ':generateContent'
