@@ -1501,9 +1501,10 @@ textarea.input-field {
   gap: 14px;
   margin-bottom: 20px;
 }
-@media (max-width: 580px) {
+@media (max-width: 480px) {
   .dashboard-summary-row {
-    grid-template-columns: 1fr 1fr; /* Keep it side-by-side on mobile, just like in screenshot */
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 }
 .summary-card {
@@ -1572,6 +1573,13 @@ textarea.input-field {
   flex-direction: column;
   gap: 8px;
 }
+@media (max-width: 480px) {
+  .macro-progress-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 16px;
+  }
+}
 .macro-progress-item {
   display: flex;
   flex-direction: column;
@@ -1580,19 +1588,20 @@ textarea.input-field {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.725rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
 .macro-progress-name {
   color: var(--text-primary);
 }
 .macro-progress-val {
   color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
 }
 .macro-progress-bar-bg {
-  height: 5px;
-  background: rgba(15, 23, 42, 0.05);
+  height: 6px;
+  background: rgba(15, 23, 42, 0.06);
   border-radius: var(--radius-full);
   overflow: hidden;
   position: relative;
