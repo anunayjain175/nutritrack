@@ -2328,6 +2328,122 @@ textarea.input-field {
   white-space: nowrap;
 }
 
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   NUTRIENT ANALYSIS PAGE REFINEMENTS
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* Period Toggle Segmented Control */
+.period-toggle {
+  display: flex;
+  background: rgba(15, 23, 42, 0.05);
+  border-radius: var(--radius-md);
+  padding: 3px;
+  gap: 2px;
+  margin-bottom: 20px;
+}
+.period-toggle .chip {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-radius: 9px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.period-toggle .chip:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.3);
+}
+.period-toggle .chip--active {
+  background: #ffffff !important;
+  color: var(--primary) !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+/* Macro Detailed Cards styling */
+.macro-detail-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+.macro-detail-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: none;
+}
+.macro-detail-card__name {
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.macro-detail-card__grams {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.macro-detail-card__cals {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+/* Calorie Breakdown Row Items */
+.calorie-breakdown__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.calorie-breakdown__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+.calorie-breakdown__row span:last-child {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.calorie-breakdown__row--net {
+  padding-top: 10px;
+  border-top: 1px dashed var(--border);
+  font-weight: 700;
+}
+.calorie-breakdown__row--net span:first-child {
+  color: var(--text-primary);
+}
+.calorie-breakdown__row--net span:last-child {
+  color: var(--primary);
+  font-size: 1.05rem;
+}
+.calorie-breakdown__goal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-top: 16px;
+  margin-bottom: 6px;
+}
+
+
 
 
 
