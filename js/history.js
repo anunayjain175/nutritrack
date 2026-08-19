@@ -73,20 +73,7 @@ window.HistoryPage = (function () {
     }
 
     function _calcStreak() {
-        var allDates = NutriStorage.getAllDatesWithData() || [];
-        if (!allDates.length) return 0;
-        var sorted = allDates.slice().sort().reverse();
-        var streak = 0;
-        var expected = _today();
-        for (var i = 0; i < sorted.length; i++) {
-            if (sorted[i] === expected) {
-                streak++;
-                expected = _dateOffset(expected, -1);
-            } else if (sorted[i] < expected) {
-                break;
-            }
-        }
-        return streak;
+        return NutriStorage.getStreak();
     }
 
     /* ───────── HTML builders ───────── */

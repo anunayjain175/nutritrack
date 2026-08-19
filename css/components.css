@@ -1878,3 +1878,100 @@ textarea.input-field {
   align-items: center;
   justify-content: center;
 }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   STREAK ACHIEVEMENTS & MILESTONES CARD
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.achievements-card {
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.achievements-card__header {
+  margin-bottom: 14px;
+}
+.achievements-card__title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin: 0;
+}
+.achievements-card__subtitle {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  margin: 2px 0 0 0;
+}
+.badges-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-top: 14px;
+}
+@media (max-width: 580px) {
+  .badges-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.badge-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 12px 8px;
+  background: rgba(15, 23, 42, 0.02);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: var(--transition-fast);
+}
+.badge-item--active {
+  background: linear-gradient(135deg, rgba(22, 163, 74, 0.05) 0%, rgba(22, 163, 74, 0.1) 100%);
+  border-color: rgba(22, 163, 74, 0.25);
+  box-shadow: 0 4px 10px rgba(22, 163, 74, 0.05);
+}
+.badge-item--active:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(22, 163, 74, 0.1);
+}
+.badge-icon {
+  font-size: 1.8rem;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.badge-item--locked .badge-icon {
+  filter: grayscale(1) opacity(0.4);
+}
+.badge-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+.badge-item--locked .badge-label {
+  color: var(--text-muted);
+}
+.badge-status {
+  font-size: 0.675rem;
+  font-weight: 500;
+  color: #16a34a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.badge-item--locked .badge-status {
+  color: var(--text-faint);
+}
+.badge-status--unlocked {
+  color: #16a34a;
+}
+.badge-status--locked {
+  color: var(--text-faint);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+

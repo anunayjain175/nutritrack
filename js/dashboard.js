@@ -71,41 +71,8 @@ window.DashboardPage = (function () {
                         '</div>';
         }
 
-        // Streak count: consecutive days ending in today
-        var allDatesWithData = NutriStorage.getAllDatesWithData() || [];
-        var streak = 0;
-        var checkDate = new Date(); // start checking from today backwards
-        while (true) {
-            var checkStr = NutriStorage.formatDate(checkDate);
-            var log = NutriStorage.getFoodLog(checkStr) || [];
-            if (log.length > 0) {
-                streak++;
-                checkDate.setDate(checkDate.getDate() - 1);
-            } else {
-                break;
-            }
-        }
-        if (streak === 0 && allDatesWithData.length > 0) {
-            // Check if they logged yesterday instead of today
-            var yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
-            var yesterdayStr = NutriStorage.formatDate(yesterday);
-            var logYesterday = NutriStorage.getFoodLog(yesterdayStr) || [];
-            if (logYesterday.length > 0) {
-                streak = 1; // start checking backwards from yesterday
-                var checkYesterday = new Date(yesterday);
-                while (true) {
-                    checkYesterday.setDate(checkYesterday.getDate() - 1);
-                    var checkYesterdayStr = NutriStorage.formatDate(checkYesterday);
-                    var logPrev = NutriStorage.getFoodLog(checkYesterdayStr) || [];
-                    if (logPrev.length > 0) {
-                        streak++;
-                    } else {
-                        break;
-                    }
-                }
-            }
-        }
+        // Streak count
+        var streak = NutriStorage.getStreak();
 
         // Header titles
         var isToday = (selectedDate === today);
@@ -383,6 +350,49 @@ window.DashboardPage = (function () {
                '</div>';
     }
 
+    function _buildAchievementsCard() {
+        var streak = NutriStorage.getStreak();
+
+        // Milestone configuration
+        var milestones = [
+            { days: 1, label: '1 Day', icon: '🌱', desc: 'First Step' },
+            { days: 3, label: '3 Days', icon: '🔥', desc: 'Habit Builder' },
+            { days: 7, label: '7 Days', icon: '⚡', desc: 'Week Warrior' },
+            { days: 15, label: '15 Days', icon: '🏆', desc: 'Consistency Expert' },
+            { days: 30, label: '30 Days', icon: '👑', desc: 'Monthly Champion' }
+        ];
+
+        var badgesHtml = '';
+        milestones.forEach(function (m) {
+            var isUnlocked = streak >= m.days;
+            var itemClass = isUnlocked ? 'badge-item badge-item--active' : 'badge-item badge-item--locked';
+            
+            var statusHtml = isUnlocked 
+                ? '<span class="badge-status badge-status--unlocked">Unlocked</span>'
+                : '<span class="badge-status badge-status--locked">🔒 Locked</span>';
+
+            var iconHtml = isUnlocked
+                ? '<div class="badge-icon">' + m.icon + '</div>'
+                : '<div class="badge-icon" title="' + m.desc + '">' + m.icon + '</div>';
+
+            badgesHtml += '<div class="' + itemClass + '" title="' + m.desc + '">' +
+                              iconHtml +
+                              '<div class="badge-label">' + m.label + '</div>' +
+                              statusHtml +
+                          '</div>';
+        });
+
+        return '<div class="card achievements-card">' +
+                   '<div class="achievements-card__header">' +
+                       '<h3 class="achievements-card__title">Streak Achievements</h3>' +
+                       '<p class="achievements-card__subtitle">Your current streak is <strong>' + streak + ' day' + (streak !== 1 ? 's' : '') + '</strong>. Keep logging to unlock milestones!</p>' +
+                   '</div>' +
+                   '<div class="badges-grid">' +
+                       badgesHtml +
+                   '</div>' +
+               '</div>';
+    }
+
     /* ───────── aggregate micronutrients ───────── */
 
     function _aggregateMicros(foodEntries) {
@@ -501,6 +511,7 @@ window.DashboardPage = (function () {
             _buildReminderBanner() +
             _buildSummaryRow(totalCalories, goal, caloriesBurned, totalProtein, totalCarbs, totalFat) +
             _buildQuickActions() +
+            _buildAchievementsCard() +
             _buildMealsTimeline(groups) +
             _buildExerciseSummary(exerciseEntries, caloriesBurned) +
             _buildMicroQuickView();

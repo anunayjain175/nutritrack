@@ -241,7 +241,45 @@ window.NutriStorage = (function () {
     _write(KEYS.nutritionCache, cache);
   }
 
-  /* ───────────────── Export / Import ─────────────────── */
+  function getStreak() {
+    var allDatesWithData = getAllDatesWithData() || [];
+    var streak = 0;
+    var checkDate = new Date(); // start checking from today backwards
+    while (true) {
+      var checkStr = formatDate(checkDate);
+      var log = getFoodLog(checkStr) || [];
+      if (log.length > 0) {
+        streak++;
+        checkDate.setDate(checkDate.getDate() - 1);
+      } else {
+        break;
+      }
+    }
+    if (streak === 0 && allDatesWithData.length > 0) {
+      // Check if they logged yesterday instead of today
+      var yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      var yesterdayStr = formatDate(yesterday);
+      var logYesterday = getFoodLog(yesterdayStr) || [];
+      if (logYesterday.length > 0) {
+        streak = 1; // start checking backwards from yesterday
+        var checkYesterday = new Date(yesterday);
+        while (true) {
+          checkYesterday.setDate(checkYesterday.getDate() - 1);
+          var checkYesterdayStr = formatDate(checkYesterday);
+          var logPrev = getFoodLog(checkYesterdayStr) || [];
+          if (logPrev.length > 0) {
+            streak++;
+          } else {
+            break;
+          }
+        }
+      }
+    }
+    return streak;
+  }
+
+  /* ─────────────────── Export / Import ─────────────────── */
 
   function exportAllData() {
     var data = {};
@@ -296,6 +334,7 @@ window.NutriStorage = (function () {
     // History / Analytics
     getDateRange: getDateRange,
     getAllDatesWithData: getAllDatesWithData,
+    getStreak: getStreak,
 
     // Nutrition Cache
     getCachedNutrition: getCachedNutrition,
