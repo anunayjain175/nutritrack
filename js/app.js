@@ -783,36 +783,90 @@ window.NutriApp = (function () {
         e.preventDefault();
         const id = document.getElementById('edit-food-id').value;
         const date = document.getElementById('edit-food-date').value;
-        
-        const updates = {
-            name: document.getElementById('edit-food-name').value,
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+
+        const newName = document.getElementById('edit-food-name').value.trim();
+        const newMeal = document.getElementById('edit-food-meal').value;
+
+        const foodLog = NutriStorage.getFoodLog(date) || [];
+        const entry = foodLog.find(item => item.id === id);
+
+        if (!entry) {
+            closeEditFoodModal();
+            return;
+        }
+
+        const originalName = entry.name || '';
+        const nameChanged = (newName.toLowerCase() !== originalName.toLowerCase());
+
+        const manualUpdates = {
+            name: newName,
             calories: parseFloat(document.getElementById('edit-food-calories').value) || 0,
             carbs: parseFloat(document.getElementById('edit-food-carbs').value) || 0,
             protein: parseFloat(document.getElementById('edit-food-protein').value) || 0,
             fat: parseFloat(document.getElementById('edit-food-fat').value) || 0,
-            meal: document.getElementById('edit-food-meal').value
+            meal: newMeal
         };
 
-        const foodLog = NutriStorage.getFoodLog(date) || [];
-        const entry = foodLog.find(item => item.id === id);
-        if (entry) {
+        if (nameChanged) {
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Recalculating with AI...';
+            }
+            showToast('Recalculating macros with Gemini AI...', 'info');
+
+            const settings = NutriStorage.getUserSettings();
+            const weight = parseFloat(settings.weight) || 70;
+
+            NutritionAI.analyzeGlobal(newName, weight)
+                .then(result => {
+                    if (result.type === 'food') {
+                        // Merge the new API data with the entry's metadata
+                        const finalUpdates = Object.assign({}, entry, result.data, {
+                            name: newName,
+                            meal: newMeal
+                        });
+                        NutriStorage.updateFoodEntry(date, id, finalUpdates);
+                        showToast(`Recalculated with AI! Logged: ${finalUpdates.name}`, 'success');
+                    } else {
+                        // If result type is not food (e.g. exercise), fallback to manual values
+                        const finalUpdates = Object.assign({}, entry, manualUpdates);
+                        NutriStorage.updateFoodEntry(date, id, finalUpdates);
+                        showToast('AI did not recognize food. Saved manually.', 'warning');
+                    }
+                })
+                .catch(err => {
+                    console.error('[Edit Recalculate Error]', err);
+                    const finalUpdates = Object.assign({}, entry, manualUpdates);
+                    NutriStorage.updateFoodEntry(date, id, finalUpdates);
+                    showToast('AI calculation failed. Saved manually.', 'warning');
+                })
+                .finally(() => {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Save Changes';
+                    }
+                    closeEditFoodModal();
+                    showPage(currentPage);
+                });
+        } else {
+            // Name didn't change, just update manual values
             if (entry.subItems && entry.subItems.length > 0) {
                 entry.subItems = [{
-                    name: updates.name,
-                    calories: updates.calories,
-                    carbs: updates.carbs,
-                    protein: updates.protein,
-                    fat: updates.fat
+                    name: manualUpdates.name,
+                    calories: manualUpdates.calories,
+                    carbs: manualUpdates.carbs,
+                    protein: manualUpdates.protein,
+                    fat: manualUpdates.fat
                 }];
             }
             
-            const finalUpdates = Object.assign({}, entry, updates);
+            const finalUpdates = Object.assign({}, entry, manualUpdates);
             NutriStorage.updateFoodEntry(date, id, finalUpdates);
             showToast('Food entry updated.', 'success');
+            closeEditFoodModal();
+            showPage(currentPage);
         }
-        
-        closeEditFoodModal();
-        showPage(currentPage);
     }
 
     function updateSettingsFirebaseUI() {
