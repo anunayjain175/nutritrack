@@ -61,54 +61,45 @@ window.FoodLogPage = (function () {
                    '</div>';
         }
 
-        var html = '<div class="card ai-search-section">' +
-                       '<h3 class="card__title"><span class="ai-sparkle">✨</span> AI Food Analysis</h3>' +
-                       '<div class="ai-search__inputs">' +
-                           '<input type="text" id="food-search-input" class="search-input" ' +
-                               'placeholder="Describe your food... (e.g., 2 eggs with toast)" autocomplete="off">' +
-                           '<div class="ai-search__row">' +
-                               '<label class="ai-search__servings-label">Servings' +
-                                   '<input type="number" id="food-servings-input" class="input-sm" value="1" min="0.25" step="0.25">' +
-                               '</label>' +
-                               '<button class="btn btn-primary" id="analyze-food-btn" data-action="analyze">' +
-                                   '<span class="ai-sparkle">✨</span> Analyze' +
-                               '</button>' +
-                           '</div>' +
+        var html = '<div class="ai-search-compact-wrapper" style="margin-bottom: 16px;">' +
+                       '<div style="display: flex; gap: 8px; align-items: center; width: 100%; position: relative;">' +
+                           '<span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 1rem; pointer-events: none; z-index: 5;">✨</span>' +
+                           '<input type="text" id="food-search-input" class="input-field" ' +
+                               'placeholder="Analyze food with AI... (e.g. 2 eggs)" ' +
+                               'style="padding-left: 36px; border-radius: var(--radius-full); margin: 0; flex: 1; height: 42px; font-size: 0.85rem;" autocomplete="off">' +
+                           '<button class="btn btn-primary" id="analyze-food-btn" data-action="analyze" style="height: 42px; padding: 0 18px; border-radius: var(--radius-full); font-size: 0.85rem;">' +
+                               'Analyze' +
+                           '</button>' +
                        '</div>';
 
         if (isAnalyzing) {
-            html += '<div class="ai-search__loading">' +
+            html += '<div class="ai-search__loading" style="margin-top: 12px; padding: 12px; background: rgba(15,23,42,0.02); border-radius: var(--radius-md);">' +
                         '<div class="skeleton skeleton--text"></div>' +
                         '<div class="skeleton skeleton--text skeleton--short"></div>' +
-                        '<div class="skeleton skeleton--text skeleton--shorter"></div>' +
                     '</div>';
         }
 
         if (analysisResult && !isAnalyzing) {
             var r = analysisResult;
-            html += '<div class="ai-result-card">' +
-                        '<div class="ai-result__header">' +
-                            '<h4 class="ai-result__name">' + (r.name || 'Food') + '</h4>' +
-                            '<span class="ai-result__serving">' + (r.servingSize || '') + ' ' + (r.servingUnit || '') + '</span>' +
+            html += '<div class="ai-result-card card" style="margin-top: 12px; padding: 16px; border: 1px dashed var(--primary);">' +
+                        '<div class="ai-result__header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">' +
+                            '<h4 class="ai-result__name" style="margin:0; font-size: 1rem; font-weight:700;">' + (r.name || 'Food') + '</h4>' +
+                            '<span class="ai-result__serving text-sm text-muted">' + (r.servingSize || '') + ' ' + (r.servingUnit || '') + '</span>' +
                         '</div>' +
-                        '<div class="ai-result__macros">' +
-                            '<div class="macro-badge macro-badge--cal">' + Math.round(r.calories || 0) + ' kcal</div>' +
-                            '<div class="macro-badge macro-badge--protein">P: ' + Math.round(r.protein || 0) + 'g</div>' +
-                            '<div class="macro-badge macro-badge--carbs">C: ' + Math.round(r.carbs || 0) + 'g</div>' +
-                            '<div class="macro-badge macro-badge--fat">F: ' + Math.round(r.fat || 0) + 'g</div>' +
+                        '<div class="ai-result__macros" style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px;">' +
+                            '<div class="macro-badge macro-badge--cal" style="background:var(--primary-glow); color:var(--primary); font-size:0.75rem; padding:4px 8px; border-radius:4px; font-weight:600;">' + Math.round(r.calories || 0) + ' kcal</div>' +
+                            '<div class="macro-badge macro-badge--protein" style="background:var(--protein-glow); color:var(--protein); font-size:0.75rem; padding:4px 8px; border-radius:4px; font-weight:600;">P: ' + Math.round(r.protein || 0) + 'g</div>' +
+                            '<div class="macro-badge macro-badge--carbs" style="background:var(--carbs-glow); color:var(--carbs); font-size:0.75rem; padding:4px 8px; border-radius:4px; font-weight:600;">C: ' + Math.round(r.carbs || 0) + 'g</div>' +
+                            '<div class="macro-badge macro-badge--fat" style="background:var(--fat-glow); color:var(--fat); font-size:0.75rem; padding:4px 8px; border-radius:4px; font-weight:600;">F: ' + Math.round(r.fat || 0) + 'g</div>' +
                         '</div>' +
-                        '<div class="ai-result__extras">' +
-                            (r.fiber ? '<span>Fiber: ' + Math.round(r.fiber) + 'g</span>' : '') +
-                            (r.sugar ? '<span>Sugar: ' + Math.round(r.sugar) + 'g</span>' : '') +
-                        '</div>' +
-                        '<div class="ai-result__actions">' +
-                            '<select id="ai-meal-select" class="select-sm">' +
+                        '<div class="ai-result__actions" style="display:flex; gap:8px; align-items:center; margin-top:12px;">' +
+                            '<select id="ai-meal-select" class="input-field select-sm" style="margin:0; padding:6px 12px; font-size:0.85rem; height:36px; border-radius:var(--radius-sm); width:110px;">' +
                                 '<option value="breakfast">Breakfast</option>' +
                                 '<option value="lunch">Lunch</option>' +
                                 '<option value="dinner">Dinner</option>' +
                                 '<option value="snacks">Snacks</option>' +
                             '</select>' +
-                            '<button class="btn btn-primary" data-action="add-ai-result">Add to Log</button>' +
+                            '<button class="btn btn-primary btn-sm" data-action="add-ai-result" style="flex:1; height:36px; font-size:0.85rem;">Add to Log</button>' +
                         '</div>' +
                     '</div>';
         }

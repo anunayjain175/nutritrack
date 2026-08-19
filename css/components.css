@@ -736,6 +736,46 @@ textarea.input-field {
   border-color: var(--primary);
 }
 
+/* Segmented control tabs for meal filtering */
+.meal-tabs {
+  display: flex;
+  background: rgba(15, 23, 42, 0.05);
+  border-radius: var(--radius-md);
+  padding: 3px;
+  gap: 2px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.meal-tabs::-webkit-scrollbar {
+  display: none;
+}
+.meal-tabs .chip {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-radius: 9px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.meal-tabs .chip:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.3);
+}
+.meal-tabs .chip--active {
+  background: #ffffff !important;
+  color: var(--primary) !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    EMPTY STATE
