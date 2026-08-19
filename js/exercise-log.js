@@ -175,14 +175,14 @@ window.ExerciseLogPage = (function () {
                         '<div class="exercise-card__met">MET: ' + ex.met + '</div>';
 
             if (isSelected) {
-                html += '<div class="exercise-card__form" onclick="event.stopPropagation()">' +
-                            '<label>Duration (min)' +
-                                '<input type="number" id="exercise-duration-input" class="input-sm" value="30" min="1" max="600">' +
+                html += '<div class="exercise-card__form">' +
+                            '<label class="input-label">Duration (min)' +
+                                '<input type="number" id="exercise-duration-input" class="input-field" value="30" min="1" max="600" style="margin-top: 4px;">' +
                             '</label>' +
                             '<div class="exercise-card__calc" id="exercise-cal-preview">' +
                                 '≈ ' + _calcCalories(ex.met, 30) + ' kcal' +
                             '</div>' +
-                            '<button class="btn btn-primary btn-sm" data-action="log-exercise">Log Exercise</button>' +
+                            '<button class="btn btn-primary btn-sm btn-block" data-action="log-exercise">Log Exercise</button>' +
                         '</div>';
             }
 
@@ -316,6 +316,13 @@ window.ExerciseLogPage = (function () {
             activeCategory = chip.getAttribute('data-category');
             selectedExercise = null;
             render();
+            return;
+        }
+
+        // If the click occurred inside the expanded form but not on the log button, do nothing (prevent toggling/collapse)
+        var isFormClick = e.target.closest('.exercise-card__form');
+        var isLogBtn = e.target.closest('[data-action="log-exercise"]');
+        if (isFormClick && !isLogBtn) {
             return;
         }
 
