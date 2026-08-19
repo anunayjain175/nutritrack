@@ -271,12 +271,15 @@ window.HistoryPage = (function () {
                     ]
                 };
             });
-            NutriCharts.stackedBar('history-macro-trend', stackedData);
+            NutriCharts.stackedBar('history-macro-trend', { data: stackedData });
         } catch (_) {}
 
         /* Calendar heatmap */
         try {
-            var heatData = rangeData.map(function (d) {
+            var heatmapDates = _datesInRange(30);
+            var heatmapRangeData = heatmapDates.map(_getDailyData);
+
+            var heatData = heatmapRangeData.map(function (d) {
                 var ratio = d.calories / goal;
                 var color;
                 if (d.foodCount === 0) color = 'rgba(255,255,255,0.05)';
@@ -287,8 +290,8 @@ window.HistoryPage = (function () {
                 return { date: d.date, value: Math.round(d.calories), color: color, label: _dayLabel(d.date) };
             });
 
-            var startDateStr = rangeData[0].date;
-            var endDateStr = rangeData[rangeData.length - 1].date;
+            var startDateStr = heatmapRangeData[0].date;
+            var endDateStr = heatmapRangeData[heatmapRangeData.length - 1].date;
 
             NutriCharts.heatmap('history-heatmap', {
                 startDate: startDateStr,
