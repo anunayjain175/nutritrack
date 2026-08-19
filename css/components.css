@@ -1509,53 +1509,59 @@ textarea.input-field {
 .summary-card {
   background: var(--bg-surface);
   border-radius: var(--radius-lg);
-  padding: 16px;
+  padding: 18px;
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 .summary-card__header {
   display: flex;
   align-items: center;
   gap: 8px;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: var(--text-primary);
+  letter-spacing: -0.01em;
 }
 .summary-card__header-icon {
-  font-size: 1.15rem;
+  font-size: 1.2rem;
 }
 .summary-card__grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   text-align: center;
+  align-items: end;
 }
 .summary-card__col {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  gap: 4px;
+  gap: 3px;
 }
 .summary-card__col:not(:last-child) {
-  border-right: 1px solid rgba(15, 23, 42, 0.05);
+  border-right: 1px solid rgba(15, 23, 42, 0.06);
 }
 .summary-card__val {
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--text-secondary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
   line-height: 1.2;
+  font-variant-numeric: tabular-nums;
 }
 .summary-card__val--highlight {
-  font-size: 1.25rem;
+  font-size: 1.6rem;
   font-weight: 800;
-  color: var(--text-primary);
+  color: var(--primary, #ff7a00);
+  letter-spacing: -0.02em;
 }
 .summary-card__label {
-  font-size: 0.725rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
-  font-weight: 500;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .summary-card--macros {

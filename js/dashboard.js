@@ -42,25 +42,28 @@ window.DashboardPage = (function () {
         return d.toISOString().slice(0, 10);
     }
 
-    function _getMonthlyData() {
+    function _getWeeklyData() {
         var dates = [];
         var today = NutriApp.getCurrentDate();
-        for (var i = 29; i >= 0; i--) {
+        for (var i = 6; i >= 0; i--) {
             dates.push(_dateOffset(today, -i));
         }
+        var daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         return dates.map(function (d) {
             var food = NutriStorage.getFoodLog(d) || [];
+            var dObj = new Date(d + 'T12:00:00');
             return {
                 date: d,
+                dayLabel: daysOfWeek[dObj.getDay()],
                 calories: food.reduce(function (sum, f) { return sum + (parseFloat(f.calories) || 0); }, 0)
             };
         });
     }
 
-    function _buildMonthlyCalorieChart() {
-        return '<div class="card monthly-calorie-trend-card">' +
-                   '<h3 class="card__title">Monthly Calorie Trend</h3>' +
-                   '<div id="dashboard-monthly-trend" class="chart-container" style="height: 140px;"></div>' +
+    function _buildWeeklyCalorieChart() {
+        return '<div class="card weekly-calorie-trend-card">' +
+                   '<h3 class="card__title">Weekly Calorie Trend</h3>' +
+                   '<div id="dashboard-weekly-trend" class="chart-container" style="height: 160px;"></div>' +
                '</div>';
     }
 
@@ -508,6 +511,35 @@ window.DashboardPage = (function () {
         return items;
     }
 
+    /* ───────── date picker ───────── */
+
+    function _openDatePicker() {
+        var existing = document.getElementById('dashboard-hidden-date-input');
+        if (existing) existing.remove();
+
+        var input = document.createElement('input');
+        input.type = 'date';
+        input.id = 'dashboard-hidden-date-input';
+        input.value = NutriApp.getCurrentDate();
+        input.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;pointer-events:none;';
+        document.body.appendChild(input);
+
+        input.addEventListener('change', function () {
+            if (input.value) {
+                NutriApp.setCurrentDate(input.value);
+                render();
+            }
+            input.remove();
+        });
+
+        // Fallback: if user cancels
+        input.addEventListener('blur', function () {
+            setTimeout(function () { input.remove(); }, 300);
+        });
+
+        input.showPicker ? input.showPicker() : input.click();
+    }
+
     /* ───────── event handling ───────── */
 
     function _handleClick(e) {
@@ -522,10 +554,10 @@ window.DashboardPage = (function () {
 
         var btn = e.target.closest('[data-action]');
         if (!btn) {
-            // Date selector click opens Settings Modal (handy fallback)
+            // Date selector click opens native date picker
             var dateSel = e.target.closest('#dashboard-date-selector-btn');
             if (dateSel) {
-                NutriApp.openSettingsModal();
+                _openDatePicker();
             }
             return;
         }
@@ -576,7 +608,7 @@ window.DashboardPage = (function () {
         /* build HTML */
         container.innerHTML =
             _buildCalendarStrip(today) +
-            _buildMonthlyCalorieChart() +
+            _buildWeeklyCalorieChart() +
             _buildReminderBanner() +
             _buildSummaryRow(totalCalories, goal, caloriesBurned, totalProtein, totalCarbs, totalFat, totalFiber) +
             _buildQuickActions() +
@@ -587,18 +619,20 @@ window.DashboardPage = (function () {
 
         /* charts */
         try {
-            var monthlyData = _getMonthlyData();
-            var lineData = monthlyData.map(function (d, i) {
-                var showLabel = (i % 5 === 0 || i === monthlyData.length - 1);
-                var dObj = new Date(d.date + 'T12:00:00');
-                var labelText = showLabel ? dObj.getDate() + ' ' + dObj.toLocaleDateString(undefined, { month: 'short' }) : '';
-                return { label: labelText, value: Math.round(d.calories) };
+            var weeklyData = _getWeeklyData();
+            var barData = weeklyData.map(function (d) {
+                var isToday2 = (d.date === today);
+                return {
+                    label: d.dayLabel,
+                    value: Math.round(d.calories),
+                    color: isToday2 ? 'var(--primary, #ff7a00)' : '#10b981'
+                };
             });
-            NutriCharts.lineChart('dashboard-monthly-trend', {
-                data: lineData,
-                color: '#10b981',
-                height: 140,
-                fillArea: true
+            var maxCal = Math.max.apply(null, barData.map(function (d) { return d.value; }));
+            NutriCharts.barChart('dashboard-weekly-trend', {
+                data: barData,
+                maxValue: Math.max(maxCal, goal) * 1.1,
+                height: 160
             });
         } catch (e) {
             console.warn('[Dashboard] Could not render monthly trend chart:', e);
