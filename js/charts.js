@@ -619,6 +619,29 @@ window.NutriCharts = (function () {
       svg.appendChild(t);
     });
 
+    // Month labels
+    var prevMonth = -1;
+    for (var w = 0; w < weeks; w++) {
+      var firstDayOfWeek = cells[w * 7];
+      if (firstDayOfWeek) {
+        var month = firstDayOfWeek.getMonth();
+        if (month !== prevMonth) {
+          prevMonth = month;
+          var monthName = firstDayOfWeek.toLocaleDateString(undefined, { month: 'short' });
+          var mt = _svgEl('text', {
+            x: 28 + w * step,
+            y: 6,
+            'text-anchor': 'start',
+            fill: 'var(--nc-muted, #94a3b8)',
+            'font-size': '8',
+            'font-weight': '600',
+          });
+          mt.textContent = monthName;
+          svg.appendChild(mt);
+        }
+      }
+    }
+
     cells.forEach(function (date, idx) {
       var week = Math.floor(idx / 7);
       var day  = idx % 7;
