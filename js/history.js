@@ -153,10 +153,10 @@ window.HistoryPage = (function () {
 
         var html = '<div class="card day-detail">' +
                        '<div class="day-detail__header">' +
-                           '<h3 class="card__title">' + _dayLabel(selectedDay) + '</h3>' +
-                           '<button class="btn-icon-sm" data-action="close-detail" title="Close">✕</button>' +
+                           '<h3 class="card__title" style="margin: 0;">' + _dayLabel(selectedDay) + '</h3>' +
+                           '<button class="btn-icon-sm" data-action="close-detail" title="Close" style="border: none; background: transparent; cursor: pointer; font-size: 1.15rem;">✕</button>' +
                        '</div>' +
-                       '<div class="stat-cards-row">' +
+                       '<div class="stat-cards-row" style="margin-top: 12px;">' +
                            '<div class="stat-card"><div class="stat-card__value">' + Math.round(data.calories) + '</div><div class="stat-card__label">kcal</div></div>' +
                            '<div class="stat-card"><div class="stat-card__value">' + Math.round(data.protein) + 'g</div><div class="stat-card__label">Protein</div></div>' +
                            '<div class="stat-card"><div class="stat-card__value">' + Math.round(data.carbs) + 'g</div><div class="stat-card__label">Carbs</div></div>' +
@@ -167,7 +167,10 @@ window.HistoryPage = (function () {
         if (data.foods.length) {
             html += '<h4>Foods</h4><ul class="day-detail__list">';
             data.foods.forEach(function (f) {
-                html += '<li>' + (f.name || 'Food') + ' — ' + Math.round(f.calories || 0) + ' kcal</li>';
+                html += '<li>' +
+                            '<span>' + (f.name || 'Food') + '</span>' +
+                            '<span style="font-weight:700; color:var(--text-primary);">' + Math.round(f.calories || 0) + ' kcal</span>' +
+                        '</li>';
             });
             html += '</ul>';
         }
@@ -175,7 +178,10 @@ window.HistoryPage = (function () {
         if (data.exercises.length) {
             html += '<h4>Exercises</h4><ul class="day-detail__list">';
             data.exercises.forEach(function (ex) {
-                html += '<li>' + (ex.name || 'Exercise') + ' — ' + (ex.duration || 0) + ' min, 🔥 ' + Math.round(ex.caloriesBurned || 0) + ' kcal</li>';
+                html += '<li>' +
+                            '<span>' + (ex.name || 'Exercise') + ' <small class="text-muted">(' + (ex.duration || 0) + ' min)</small></span>' +
+                            '<span style="font-weight:700; color:var(--primary);">🔥 ' + Math.round(ex.caloriesBurned || 0) + ' kcal</span>' +
+                        '</li>';
             });
             html += '</ul>';
         }
@@ -280,7 +286,14 @@ window.HistoryPage = (function () {
 
                 return { date: d.date, value: Math.round(d.calories), color: color, label: _dayLabel(d.date) };
             });
-            NutriCharts.heatmap('history-heatmap', heatData, {
+
+            var startDateStr = rangeData[0].date;
+            var endDateStr = rangeData[rangeData.length - 1].date;
+
+            NutriCharts.heatmap('history-heatmap', {
+                startDate: startDateStr,
+                endDate: endDateStr,
+                data: heatData,
                 onClick: function (dateStr) {
                     selectedDay = dateStr;
                     /* re-render only the detail section to avoid full rebuild */
