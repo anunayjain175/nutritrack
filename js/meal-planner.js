@@ -396,7 +396,7 @@ window.MealPlannerPage = (function () {
         var html = '<div class="meal-filter-wrapper">' +
                        '<div class="search-input-wrapper meal-search-wrap">' +
                            '<span class="search-icon">🔍</span>' +
-                           '<input type="text" id="meal-search-input" class="input-field" ' +
+                            '<input type="text" id="meal-search-input" class="input-field search-input" ' +
                                'placeholder="Search saved meals by name or food..." ' +
                                'value="' + searchQuery + '" autocomplete="off">' +
                            (searchQuery ? '<button class="search-clear-btn" data-action="clear-search">✕</button>' : '') +
