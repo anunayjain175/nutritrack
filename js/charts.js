@@ -686,6 +686,20 @@ window.NutriCharts = (function () {
       rect.appendChild(title);
       svg.appendChild(rect);
 
+      // Render day number inside the cell
+      var dayNumText = _svgEl('text', {
+        x: 28 + week * step + cellSize / 2,
+        y: 14 + day * step + cellSize / 2,
+        'text-anchor': 'middle',
+        'dominant-baseline': 'central',
+        fill: (fillColor.indexOf('rgba(128,128,128,.10)') !== -1 || fillColor.indexOf('rgba(255,255,255,0.05)') !== -1) ? 'var(--text-muted)' : '#ffffff',
+        'font-size': '6.5',
+        'font-weight': '700',
+        style: 'pointer-events: none;',
+      });
+      dayNumText.textContent = date.getDate();
+      svg.appendChild(dayNumText);
+
       requestAnimationFrame(function () {
         rect.setAttribute('opacity', '1');
       });
