@@ -1507,6 +1507,45 @@ textarea.input-field {
   font-weight: 500;
 }
 
+.summary-card--macros {
+  gap: 10px !important;
+}
+.macro-progress-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.macro-progress-item {
+  display: flex;
+  flex-direction: column;
+}
+.macro-progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.725rem;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.macro-progress-name {
+  color: var(--text-primary);
+}
+.macro-progress-val {
+  color: var(--text-muted);
+}
+.macro-progress-bar-bg {
+  height: 5px;
+  background: rgba(15, 23, 42, 0.05);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+.macro-progress-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    REMINDER BANNER

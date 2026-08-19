@@ -133,7 +133,7 @@ window.DashboardPage = (function () {
                '</div>';
     }
 
-    function _buildSummaryRow(totalCals, goal, burned, protein, carbs, fat) {
+    function _buildSummaryRow(totalCals, goal, burned, protein, carbs, fat, fiber) {
         var net = totalCals - burned;
         var remaining = goal - net; // goal - consumed + burned
         
@@ -141,6 +141,12 @@ window.DashboardPage = (function () {
         var proteinGoal = Math.round((goal * 0.25) / 4);
         var carbsGoal   = Math.round((goal * 0.50) / 4);
         var fatGoal      = Math.round((goal * 0.25) / 9);
+        var fiberGoal    = Math.round((goal * 14) / 1000);
+
+        var proteinPct = Math.min(Math.round((protein / proteinGoal) * 100), 100);
+        var carbsPct   = Math.min(Math.round((carbs / carbsGoal) * 100), 100);
+        var fatPct     = Math.min(Math.round((fat / fatGoal) * 100), 100);
+        var fiberPct   = Math.min(Math.round((fiber / fiberGoal) * 100), 100);
 
         return '<div class="dashboard-summary-row">' +
                    /* Card 1: Calories */
@@ -164,24 +170,52 @@ window.DashboardPage = (function () {
                            '</div>' +
                        '</div>' +
                    '</div>' +
-                   /* Card 2: Macros */
-                   '<div class="summary-card">' +
-                       '<div class="summary-card__header">' +
+                   /* Card 2: Macros with Progress Bars */
+                   '<div class="summary-card summary-card--macros">' +
+                       '<div class="summary-card__header" style="margin-bottom: 2px;">' +
                            '<span class="summary-card__header-icon">🍩</span>' +
                            '<span>Macros</span>' +
                        '</div>' +
-                       '<div class="summary-card__grid">' +
-                           '<div class="summary-card__col">' +
-                               '<span class="summary-card__val">' + Math.round(carbs) + '/' + carbsGoal + '</span>' +
-                               '<span class="summary-card__label">Carbs (g)</span>' +
+                       '<div class="macro-progress-list">' +
+                           // Carbs
+                           '<div class="macro-progress-item">' +
+                               '<div class="macro-progress-info">' +
+                                   '<span class="macro-progress-name">Carbs</span>' +
+                                   '<span class="macro-progress-val">' + Math.round(carbs) + 'g / ' + carbsGoal + 'g</span>' +
+                               '</div>' +
+                               '<div class="macro-progress-bar-bg">' +
+                                   '<div class="macro-progress-bar-fill" style="width:' + carbsPct + '%; background:var(--carbs);"></div>' +
+                               '</div>' +
                            '</div>' +
-                           '<div class="summary-card__col">' +
-                               '<span class="summary-card__val">' + Math.round(protein) + '/' + proteinGoal + '</span>' +
-                               '<span class="summary-card__label">Protein (g)</span>' +
+                           // Protein
+                           '<div class="macro-progress-item">' +
+                               '<div class="macro-progress-info">' +
+                                   '<span class="macro-progress-name">Protein</span>' +
+                                   '<span class="macro-progress-val">' + Math.round(protein) + 'g / ' + proteinGoal + 'g</span>' +
+                               '</div>' +
+                               '<div class="macro-progress-bar-bg">' +
+                                   '<div class="macro-progress-bar-fill" style="width:' + proteinPct + '%; background:var(--protein);"></div>' +
+                               '</div>' +
                            '</div>' +
-                           '<div class="summary-card__col">' +
-                               '<span class="summary-card__val">' + Math.round(fat) + '/' + fatGoal + '</span>' +
-                               '<span class="summary-card__label">Fat (g)</span>' +
+                           // Fat
+                           '<div class="macro-progress-item">' +
+                               '<div class="macro-progress-info">' +
+                                   '<span class="macro-progress-name">Fat</span>' +
+                                   '<span class="macro-progress-val">' + Math.round(fat) + 'g / ' + fatGoal + 'g</span>' +
+                               '</div>' +
+                               '<div class="macro-progress-bar-bg">' +
+                                   '<div class="macro-progress-bar-fill" style="width:' + fatPct + '%; background:var(--fat);"></div>' +
+                               '</div>' +
+                           '</div>' +
+                           // Fiber
+                           '<div class="macro-progress-item">' +
+                               '<div class="macro-progress-info">' +
+                                   '<span class="macro-progress-name">Fiber</span>' +
+                                   '<span class="macro-progress-val">' + Math.round(fiber) + 'g / ' + fiberGoal + 'g</span>' +
+                               '</div>' +
+                               '<div class="macro-progress-bar-bg">' +
+                                   '<div class="macro-progress-bar-fill" style="width:' + fiberPct + '%; background:var(--fiber);"></div>' +
+                               '</div>' +
                            '</div>' +
                        '</div>' +
                    '</div>' +
@@ -534,6 +568,7 @@ window.DashboardPage = (function () {
         var totalProtein   = _totalOf(foodEntries, 'protein');
         var totalCarbs     = _totalOf(foodEntries, 'carbs');
         var totalFat       = _totalOf(foodEntries, 'fat');
+        var totalFiber     = _totalOf(foodEntries, 'fiber');
         var caloriesBurned = _totalOf(exerciseEntries, 'caloriesBurned');
 
         var groups = _groupByMeal(foodEntries);
@@ -543,7 +578,7 @@ window.DashboardPage = (function () {
             _buildCalendarStrip(today) +
             _buildMonthlyCalorieChart() +
             _buildReminderBanner() +
-            _buildSummaryRow(totalCalories, goal, caloriesBurned, totalProtein, totalCarbs, totalFat) +
+            _buildSummaryRow(totalCalories, goal, caloriesBurned, totalProtein, totalCarbs, totalFat, totalFiber) +
             _buildQuickActions() +
             _buildAchievementsCard() +
             _buildMealsTimeline(groups) +
