@@ -11,14 +11,14 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  padding: 10px 20px;
+  padding: 10px 22px;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.4;
   border: 1px solid transparent;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   cursor: pointer;
-  transition: var(--transition);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
   white-space: nowrap;
@@ -31,7 +31,7 @@
   outline-offset: 2px;
 }
 .btn:active {
-  transform: scale(0.97);
+  transform: scale(0.96) translateY(0);
 }
 /* Ripple effect */
 .btn .ripple {
@@ -46,11 +46,11 @@
 .btn-primary {
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: #fff;
-  box-shadow: 0 4px 14px var(--primary-glow);
+  box-shadow: 0 4px 12px rgba(255, 122, 0, 0.2);
 }
 .btn-primary:hover {
-  box-shadow: 0 6px 24px rgba(16, 185, 129, 0.40);
-  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255, 122, 0, 0.35);
+  transform: translateY(-1.5px);
 }
 
 /* Secondary */
@@ -64,18 +64,19 @@
 .btn-secondary:hover {
   background: var(--glass-bg-hover);
   border-color: var(--glass-border-hover);
-  transform: translateY(-1px);
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
 }
 
 /* Danger */
 .btn-danger {
   background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
   color: #fff;
-  box-shadow: 0 4px 14px var(--danger-glow);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
 }
 .btn-danger:hover {
-  box-shadow: 0 6px 24px rgba(239, 68, 68, 0.40);
-  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.35);
+  transform: translateY(-1.5px);
 }
 
 /* Ghost */
@@ -84,32 +85,31 @@
   color: var(--text-muted);
 }
 .btn-ghost:hover {
-  background: var(--glass-bg);
+  background: rgba(15, 23, 42, 0.04);
   color: var(--text-primary);
 }
 
 /* Icon only */
 .btn-icon {
   padding: 10px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   background: var(--glass-bg);
   border-color: var(--glass-border);
 }
 .btn-icon:hover {
   background: var(--glass-bg-hover);
   border-color: var(--glass-border-hover);
+  transform: translateY(-1px);
 }
 
 /* Sizes */
 .btn-sm {
-  padding: 6px 14px;
+  padding: 6px 16px;
   font-size: 0.8rem;
-  border-radius: var(--radius-sm);
 }
 .btn-lg {
-  padding: 14px 28px;
+  padding: 14px 30px;
   font-size: 1rem;
-  border-radius: var(--radius-lg);
 }
 
 .btn:disabled,
@@ -124,15 +124,16 @@
    CARDS (Glassmorphic)
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .card {
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(15, 23, 42, 0.06);
   border-radius: var(--radius-lg);
-  padding: var(--space-6);
-  transition: var(--transition);
+  padding: var(--space-5);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.03), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
 }
 /* Subtle inner glow at top edge */
 .card::before {
@@ -144,15 +145,15 @@
   height: 1px;
   background: linear-gradient(90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.10) 50%,
+    rgba(255, 255, 255, 0.20) 50%,
     transparent 100%
   );
   pointer-events: none;
 }
 .card:hover {
-  border-color: var(--glass-border-hover);
+  border-color: rgba(15, 23, 42, 0.12);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 12px 30px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
 }
 
 .card-header {

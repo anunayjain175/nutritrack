@@ -373,7 +373,10 @@ window.DashboardPage = (function () {
 
     function _buildMicroQuickView() {
         return '<div class="card micro-quick-view">' +
-                   '<h3 class="card__title">Micro Nutrients Quick View</h3>' +
+                   '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">' +
+                       '<h3 class="card__title" style="margin:0;">Micro Nutrients</h3>' +
+                       '<button class="text-primary text-sm font-semibold" data-action="go-nutrients" style="display:flex; align-items:center; gap:4px; font-weight:600;">Full Report ➔</button>' +
+                   '</div>' +
                    '<div id="dashboard-micro-bars" class="chart-container"></div>' +
                '</div>';
     }
@@ -498,6 +501,8 @@ window.DashboardPage = (function () {
             NutriApp.navigate('food');
         } else if (action === 'add-exercise') {
             NutriApp.navigate('exercise');
+        } else if (action === 'go-nutrients') {
+            NutriApp.navigate('nutrients');
         } else if (action === 'dismiss-reminder') {
             reminderBannerDismissed = true;
             render();

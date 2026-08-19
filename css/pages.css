@@ -8,8 +8,66 @@
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 #app {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
   position: relative;
+  background: var(--bg-deep);
+}
+
+@media (min-width: 481px) {
+  body {
+    background: linear-gradient(135deg, #0b0f19 0%, #111827 100%) !important;
+    background-attachment: fixed !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 20px 0 !important;
+    min-height: 100vh !important;
+  }
+  #app {
+    width: 430px;
+    height: 880px;
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 0 12px #1f2937, 0 0 0 13px #374151;
+    position: relative;
+    border: none;
+  }
+  #sidebar {
+    display: none !important;
+  }
+  #main-content {
+    height: calc(100% - 60px);
+    overflow-y: auto;
+    margin-left: 0 !important;
+    max-width: 100% !important;
+    padding: var(--space-4) var(--space-4) 90px !important;
+  }
+  #bottom-nav {
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    display: block !important;
+    border-top: 1px solid var(--border);
+  }
+  .global-bottom-bar {
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 60px !important;
+    padding: 8px 12px !important;
+    background: linear-gradient(180deg, rgba(248, 250, 252, 0) 0%, #f8fafc 90%) !important;
+  }
+  .toast-container {
+    position: absolute !important;
+    left: var(--space-4) !important;
+    right: var(--space-4) !important;
+    top: var(--space-4) !important;
+  }
+  .modal-overlay {
+    position: absolute !important;
+  }
 }
 
 
@@ -967,41 +1025,7 @@
 }
 
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   DESKTOP ENHANCEMENTS (min-width: 1024px)
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-@media (min-width: 1024px) {
-  #sidebar {
-    display: flex;
-  }
-
-  #bottom-nav {
-    display: none !important;
-  }
-
-  /* Wider dashboard on large screens */
-  .dashboard-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   LARGE DESKTOP (min-width: 1440px)
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-@media (min-width: 1440px) {
-  #main-content {
-    padding: var(--space-10) var(--space-12);
-  }
-
-  .macro-cards {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .history-stats {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
+/* Desktop view is constrained to mobile-first frame */
 
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
