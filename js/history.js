@@ -246,11 +246,10 @@ window.HistoryPage = (function () {
             var lineData = rangeData.map(function (d) {
                 return { label: _shortDay(d.date), value: Math.round(d.calories) };
             });
-            NutriCharts.lineChart('history-calorie-trend', lineData, {
-                goalLine: goal,
-                goalLabel: 'Goal',
+            NutriCharts.lineChart('history-calorie-trend', {
+                data: lineData,
                 color: '#22c55e',
-                fill: true
+                fillArea: true
             });
         } catch (_) {}
 

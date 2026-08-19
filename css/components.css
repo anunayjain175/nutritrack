@@ -1975,3 +1975,16 @@ textarea.input-field {
   gap: 2px;
 }
 
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   MONTHLY CALORIE HISTORY TREND CARD
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.monthly-calorie-trend-card {
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+.monthly-calorie-trend-card .chart-container {
+  margin-top: 12px;
+  overflow: hidden;
+}
+
+

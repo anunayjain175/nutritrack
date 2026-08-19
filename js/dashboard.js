@@ -36,6 +36,34 @@ window.DashboardPage = (function () {
         return Math.min(Math.round((value / goal) * 100), 100);
     }
 
+    function _dateOffset(base, days) {
+        var d = new Date(base);
+        d.setDate(d.getDate() + days);
+        return d.toISOString().slice(0, 10);
+    }
+
+    function _getMonthlyData() {
+        var dates = [];
+        var today = NutriApp.getCurrentDate();
+        for (var i = 29; i >= 0; i--) {
+            dates.push(_dateOffset(today, -i));
+        }
+        return dates.map(function (d) {
+            var food = NutriStorage.getFoodLog(d) || [];
+            return {
+                date: d,
+                calories: food.reduce(function (sum, f) { return sum + (parseFloat(f.calories) || 0); }, 0)
+            };
+        });
+    }
+
+    function _buildMonthlyCalorieChart() {
+        return '<div class="card monthly-calorie-trend-card">' +
+                   '<h3 class="card__title">Monthly Calorie Trend</h3>' +
+                   '<div id="dashboard-monthly-trend" class="chart-container" style="height: 140px;"></div>' +
+               '</div>';
+    }
+
     /* ───────── render helpers ───────── */
 
     function _buildCalendarStrip(selectedDate) {
@@ -508,6 +536,7 @@ window.DashboardPage = (function () {
         /* build HTML */
         container.innerHTML =
             _buildCalendarStrip(today) +
+            _buildMonthlyCalorieChart() +
             _buildReminderBanner() +
             _buildSummaryRow(totalCalories, goal, caloriesBurned, totalProtein, totalCarbs, totalFat) +
             _buildQuickActions() +
@@ -517,6 +546,24 @@ window.DashboardPage = (function () {
             _buildMicroQuickView();
 
         /* charts */
+        try {
+            var monthlyData = _getMonthlyData();
+            var lineData = monthlyData.map(function (d, i) {
+                var showLabel = (i % 5 === 0 || i === monthlyData.length - 1);
+                var dObj = new Date(d.date + 'T12:00:00');
+                var labelText = showLabel ? dObj.getDate() + ' ' + dObj.toLocaleDateString(undefined, { month: 'short' }) : '';
+                return { label: labelText, value: Math.round(d.calories) };
+            });
+            NutriCharts.lineChart('dashboard-monthly-trend', {
+                data: lineData,
+                color: '#10b981',
+                height: 140,
+                fillArea: true
+            });
+        } catch (e) {
+            console.warn('[Dashboard] Could not render monthly trend chart:', e);
+        }
+
         try {
             NutriCharts.horizontalBars('dashboard-micro-bars', _microBarsData(foodEntries), {
                 barHeight: 18,
