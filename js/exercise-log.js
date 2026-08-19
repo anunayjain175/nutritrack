@@ -148,9 +148,10 @@ window.ExerciseLogPage = (function () {
     }
 
     function _buildSearchInput() {
-        return '<div class="exercise-search">' +
+        return '<div class="exercise-search search-input-wrapper" style="margin-bottom: 16px;">' +
+                   '<span class="search-icon">🔍</span>' +
                    '<input type="text" id="exercise-search-input" class="search-input" ' +
-                       'placeholder="Search exercises..." value="' + (searchQuery || '') + '" autocomplete="off">' +
+                       'placeholder="Search exercises..." value="' + (searchQuery || '') + '" autocomplete="off" style="border-radius: var(--radius-full);">' +
                '</div>';
     }
 
@@ -226,38 +227,38 @@ window.ExerciseLogPage = (function () {
     }
 
     function _buildCustomExercise() {
-        var html = '<button class="btn btn-secondary manual-entry-toggle" data-action="toggle-custom">' +
+        var html = '<button class="btn btn-secondary manual-entry-toggle" data-action="toggle-custom" style="margin-top:16px; margin-bottom:16px;">' +
                        (showCustomForm ? '✕ Close Custom Entry' : '✏️ Custom Exercise') +
                    '</button>';
 
         if (showCustomForm) {
             html += '<div class="card custom-exercise-form">' +
-                        '<h3 class="card__title">Custom Exercise</h3>' +
+                        '<h3 class="card__title" style="margin-bottom: 16px;">Custom Exercise</h3>' +
                         '<form id="custom-exercise-form">' +
-                            '<div class="form-group">' +
-                                '<label>Exercise Name *</label>' +
-                                '<input type="text" name="name" class="input" required placeholder="e.g., Jump squats">' +
+                            '<div class="input-group">' +
+                                '<label class="input-label">Exercise Name *</label>' +
+                                '<input type="text" name="name" class="input-field" required placeholder="e.g., Jump squats">' +
                             '</div>' +
-                            '<div class="form-row">' +
-                                '<div class="form-group">' +
-                                    '<label>Duration (min) *</label>' +
-                                    '<input type="number" name="duration" class="input" required min="1" value="30">' +
+                            '<div class="input-row">' +
+                                '<div class="input-group">' +
+                                    '<label class="input-label">Duration (min) *</label>' +
+                                    '<input type="number" name="duration" class="input-field" required min="1" value="30">' +
                                 '</div>' +
-                                '<div class="form-group">' +
-                                    '<label>Calories Burned *</label>' +
-                                    '<input type="number" name="caloriesBurned" class="input" required min="0">' +
+                                '<div class="input-group">' +
+                                    '<label class="input-label">Calories Burned *</label>' +
+                                    '<input type="number" name="caloriesBurned" class="input-field" required min="0">' +
                                 '</div>' +
                             '</div>' +
-                            '<div class="form-group">' +
-                                '<label>Category</label>' +
-                                '<select name="category" class="input">' +
+                            '<div class="input-group">' +
+                                '<label class="input-label">Category</label>' +
+                                '<select name="category" class="input-field select">' +
                                     '<option value="cardio">Cardio</option>' +
                                     '<option value="strength">Strength</option>' +
                                     '<option value="flexibility">Flexibility</option>' +
                                     '<option value="sports">Sports</option>' +
                                 '</select>' +
                             '</div>' +
-                            '<button type="submit" class="btn btn-primary btn-block">Log Exercise</button>' +
+                            '<button type="submit" class="btn btn-primary btn-block" style="margin-top: 8px;">Log Exercise</button>' +
                         '</form>' +
                     '</div>';
         }

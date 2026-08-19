@@ -740,10 +740,11 @@ textarea.input-field {
   border-color: var(--border-hover);
 }
 .chip-active,
-.chip.active {
-  background: var(--primary-subtle);
-  color: var(--primary);
-  border-color: var(--primary);
+.chip.active,
+.chip--active {
+  background: var(--primary-glow) !important;
+  color: var(--primary) !important;
+  border-color: var(--primary) !important;
 }
 
 /* Segmented control tabs for meal filtering */
@@ -2123,6 +2124,147 @@ textarea.input-field {
   padding: 2px 8px;
   border-radius: var(--radius-full);
 }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   EXERCISE PAGE REFINEMENTS
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* Category Chips Horizontal Scroll */
+.category-chips {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 4px 0;
+}
+.category-chips::-webkit-scrollbar {
+  display: none;
+}
+.category-chips .chip {
+  flex-shrink: 0;
+}
+
+/* Exercise Cards styling */
+.exercise-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  border: 1px solid rgba(15, 23, 42, 0.05);
+  background: var(--bg-surface);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 16px !important;
+  border-radius: var(--radius-lg);
+}
+.exercise-card:hover {
+  border-color: rgba(15, 23, 42, 0.12);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.04);
+}
+.exercise-card--selected {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px var(--primary-glow) !important;
+}
+.exercise-card__name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+.category-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 10px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #ffffff;
+  border-radius: var(--radius-full);
+  width: fit-content;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.category-badge--sm {
+  padding: 2px 8px;
+  font-size: 0.6rem;
+}
+.exercise-card__met {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.exercise-card__form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border);
+}
+.exercise-card__form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.exercise-card__calc {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-align: center;
+  padding: 4px 0;
+}
+
+/* Today's Logged Exercise List */
+.exercise-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 0;
+  list-style: none;
+}
+.exercise-list__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(15, 23, 42, 0.03);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+}
+.exercise-list__item:hover {
+  background: rgba(255, 255, 255, 0.65);
+  border-color: rgba(15, 23, 42, 0.12);
+}
+.exercise-list__info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.exercise-list__name {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+.exercise-list__stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-left: auto;
+  margin-right: 12px;
+}
+.exercise-list__stats span:last-child {
+  color: var(--primary);
+  font-weight: 700;
+}
+
 
 
 
