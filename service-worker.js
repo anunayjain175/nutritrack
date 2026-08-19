@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nutritrack-v28';
+const CACHE_NAME = 'nutritrack-v29';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',

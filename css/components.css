@@ -2509,6 +2509,18 @@ textarea.input-field {
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
 }
+.weekly-summary__item:nth-child(5),
+.weekly-summary__item:nth-child(6) {
+  grid-column: span 2;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.weekly-summary__item:nth-child(5) .weekly-summary__value,
+.weekly-summary__item:nth-child(6) .weekly-summary__value {
+  text-align: right;
+  max-width: 65%;
+}
 .weekly-summary__label {
   font-size: 0.75rem;
   font-weight: 600;

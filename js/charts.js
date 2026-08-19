@@ -605,15 +605,15 @@ window.NutriCharts = (function () {
     });
 
     // Day labels
-    var dayLabels = ['', 'Mon', '', 'Wed', '', 'Fri', ''];
+    var dayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     dayLabels.forEach(function (lbl, i) {
-      if (!lbl) return;
       var t = _svgEl('text', {
-        x: 0, y: 20 + i * step + cellSize / 2,
+        x: 0, y: 14 + i * step + cellSize / 2,
         'text-anchor': 'start',
         'dominant-baseline': 'central',
         fill: 'var(--nc-muted, #94a3b8)',
-        'font-size': '10',
+        'font-size': '8',
+        'font-weight': '600',
       });
       t.textContent = lbl;
       svg.appendChild(t);
@@ -649,8 +649,14 @@ window.NutriCharts = (function () {
         rx: 3, ry: 3,
         fill: fillColor,
         opacity: '0',
-        style: 'transition: opacity .4s ease ' + (idx * 0.004) + 's;',
+        style: 'transition: opacity .4s ease ' + (idx * 0.004) + 's; cursor: pointer;',
       });
+
+      if (opts.onClick) {
+        rect.addEventListener('click', function () {
+          opts.onClick(key);
+        });
+      }
 
       var title = _svgEl('title');
       title.textContent = key + (entry ? ': ' + _fmt(entry.value) + ' / ' + _fmt(entry.max || 0) : ': no data');
