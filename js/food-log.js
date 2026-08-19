@@ -250,39 +250,39 @@ window.FoodLogPage = (function () {
                    '</button>';
 
         if (showManualForm) {
-            html += '<div class="card manual-entry-form">' +
-                        '<h3 class="card__title">Add Food Manually</h3>' +
+            html += '<div class="card manual-entry-form" style="margin-top: 16px;">' +
+                        '<h3 class="card__title" style="margin-bottom: 16px;">Add Food Manually</h3>' +
                         '<form id="manual-food-form">' +
-                            '<div class="form-group">' +
-                                '<label>Food Name *</label>' +
-                                '<input type="text" name="name" class="input" required placeholder="e.g., Chicken Breast">' +
+                            '<div class="input-group">' +
+                                '<label class="input-label">Food Name *</label>' +
+                                '<input type="text" name="name" class="input-field" required placeholder="e.g., Chicken Breast">' +
                             '</div>' +
-                            '<div class="form-row">' +
-                                '<div class="form-group"><label>Calories *</label><input type="number" name="calories" class="input" required min="0"></div>' +
-                                '<div class="form-group"><label>Protein (g)</label><input type="number" name="protein" class="input" min="0" step="0.1"></div>' +
+                            '<div class="input-row">' +
+                                '<div class="input-group"><label class="input-label">Calories *</label><input type="number" name="calories" class="input-field" required min="0"></div>' +
+                                '<div class="input-group"><label class="input-label">Protein (g)</label><input type="number" name="protein" class="input-field" min="0" step="0.1"></div>' +
                             '</div>' +
-                            '<div class="form-row">' +
-                                '<div class="form-group"><label>Carbs (g)</label><input type="number" name="carbs" class="input" min="0" step="0.1"></div>' +
-                                '<div class="form-group"><label>Fat (g)</label><input type="number" name="fat" class="input" min="0" step="0.1"></div>' +
+                            '<div class="input-row">' +
+                                '<div class="input-group"><label class="input-label">Carbs (g)</label><input type="number" name="carbs" class="input-field" min="0" step="0.1"></div>' +
+                                '<div class="input-group"><label class="input-label">Fat (g)</label><input type="number" name="fat" class="input-field" min="0" step="0.1"></div>' +
                             '</div>' +
-                            '<div class="form-row">' +
-                                '<div class="form-group"><label>Fiber (g)</label><input type="number" name="fiber" class="input" min="0" step="0.1"></div>' +
-                                '<div class="form-group"><label>Sugar (g)</label><input type="number" name="sugar" class="input" min="0" step="0.1"></div>' +
+                            '<div class="input-row">' +
+                                '<div class="input-group"><label class="input-label">Fiber (g)</label><input type="number" name="fiber" class="input-field" min="0" step="0.1"></div>' +
+                                '<div class="input-group"><label class="input-label">Sugar (g)</label><input type="number" name="sugar" class="input-field" min="0" step="0.1"></div>' +
                             '</div>' +
-                            '<div class="form-row">' +
-                                '<div class="form-group"><label>Serving Size</label><input type="number" name="servingSize" class="input" min="0" step="0.1"></div>' +
-                                '<div class="form-group"><label>Serving Unit</label><input type="text" name="servingUnit" class="input" placeholder="g, oz, cup..."></div>' +
+                            '<div class="input-row">' +
+                                '<div class="input-group"><label class="input-label">Serving Size</label><input type="number" name="servingSize" class="input-field" min="0" step="0.1"></div>' +
+                                '<div class="input-group"><label class="input-label">Serving Unit</label><input type="text" name="servingUnit" class="input-field" placeholder="g, oz, cup..."></div>' +
                             '</div>' +
-                            '<div class="form-group">' +
-                                '<label>Meal</label>' +
-                                '<select name="meal" class="input">' +
+                            '<div class="input-group">' +
+                                '<label class="input-label">Meal</label>' +
+                                '<select name="meal" class="input-field select">' +
                                     '<option value="breakfast">Breakfast</option>' +
                                     '<option value="lunch">Lunch</option>' +
                                     '<option value="dinner">Dinner</option>' +
                                     '<option value="snacks">Snacks</option>' +
                                 '</select>' +
                             '</div>' +
-                            '<button type="submit" class="btn btn-primary btn-block">Add to Log</button>' +
+                            '<button type="submit" class="btn btn-primary btn-block" style="margin-top: 8px;">Add to Log</button>' +
                         '</form>' +
                     '</div>';
         }

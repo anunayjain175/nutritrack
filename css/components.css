@@ -194,6 +194,16 @@
   margin-bottom: var(--space-5);
 }
 
+.input-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.input-row .input-group {
+  flex: 1;
+  margin-bottom: 0;
+}
+
 .input-label {
   font-size: 0.8125rem;
   font-weight: 500;
@@ -203,12 +213,12 @@
 
 .input-field {
   width: 100%;
-  padding: 12px 16px;
+  padding: 12px 20px;
   font-size: 0.9375rem;
   color: var(--text-primary);
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   outline: none;
   transition: var(--transition);
 }
@@ -2066,5 +2076,53 @@ textarea.input-field {
   margin-top: 12px;
   overflow: hidden;
 }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RECENT FOOD CHIPS
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.recent-foods__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+.recent-food-chip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 18px;
+  background: rgba(15, 23, 42, 0.03);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 100%;
+  text-align: left;
+}
+.recent-food-chip:hover {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(15, 23, 42, 0.12);
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+}
+.recent-food-chip:active {
+  transform: scale(0.98) translateY(0);
+}
+.recent-food-chip__name {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.recent-food-chip__cals {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary);
+  background: var(--primary-glow);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
 
 
