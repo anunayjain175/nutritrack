@@ -1058,6 +1058,16 @@ window.MealPlannerPage = (function () {
             _buildHeader(allMeals.length) +
             _buildAiGenerator() +
             _buildMealForm() +
-    return { init: init, render: render };
+            _buildFilterBar(allMeals) +
+            '<div id="meal-grid-container">' +
+                _buildSavedMealsGrid(filteredMeals, allMeals) +
+            '</div>' +
+            _buildPresetsSection();
+    }
+
+    return {
+        init: init,
+        render: render
+    };
 
 })();
